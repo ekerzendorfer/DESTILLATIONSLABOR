@@ -118,13 +118,19 @@
     .stars{letter-spacing:1px;color:#fde68a;font-weight:900}
     @media(max-width:850px){.purityGrid{grid-template-columns:1fr}}
 
+  
+    .balanceOk{color:#86efac}.balanceWarn{color:#fde68a}.balanceBad{color:#fca5a5}
+    .balanceLine{margin-top:8px;font-size:.88rem;color:var(--muted)}
+    .openVessel{fill:none;stroke:#93c5fd;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+    .jointHatch{stroke:#dbeafe;stroke-width:1.8;opacity:.75}
+
   </style>
 </head>
 <body>
 <header>
   <div>
     <h1 data-i18n="appTitle">Virtuelle fraktionierende Destillation</h1>
-    <div class="sub" data-i18n="subtitle">Version 0.8.4 – korrigierter Teststand mit plausiblerer Fraktionierung</div>
+    <div class="sub" data-i18n="subtitle">Version 0.8.5 – korrigierter Teststand mit plausiblerer Fraktionierung</div>
   </div>
   <div class="lang">
     <span class="small" data-i18n="language">Sprache</span>
@@ -192,7 +198,7 @@
 
       <hr style="border-color:rgba(148,163,184,.16);margin:16px 0">
       <div class="note" data-i18n="modelNote">
-        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.4 bewusst nicht berücksichtigt.
+        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.5 bewusst nicht berücksichtigt.
       </div>
     </div>
   </section>
@@ -228,6 +234,13 @@
         <circle class="bubble b3" cx="258" cy="434" r="6"/>
         <circle class="bubble b4" cx="225" cy="427" r="4"/>
 
+        <!-- pot thermometer side arm -->
+        <g id="potThermoArm">
+          <path class="thinGlass" d="M170 365 L112 330"/>
+          <line x1="105" y1="315" x2="150" y2="390" stroke="#fca5a5" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="151" cy="390" r="7" fill="#fca5a5"/>
+        </g>
+
         <!-- heater -->
         <path id="heater" class="heater" d="M145 500 L315 500 L285 570 L175 570 Z"/>
         <path id="heatGlow" d="M178 548 C195 510,215 542,230 505 C244 540,267 512,283 548 Z" fill="url(#flame)" opacity=".12"/>
@@ -235,6 +248,12 @@
 
         <!-- column, thermometer, condenser -->
         <path class="thinGlass" d="M230 317 L230 220"/>
+        <g id="flaskColumnJoint">
+          <path class="condenserGlass" d="M208 318 L252 318 L245 340 L215 340 Z"/>
+          <line class="jointHatch" x1="215" y1="322" x2="210" y2="336"/>
+          <line class="jointHatch" x1="228" y1="322" x2="223" y2="338"/>
+          <line class="jointHatch" x1="241" y1="322" x2="236" y2="336"/>
+        </g>
         <rect class="glass" x="204" y="166" width="52" height="154" rx="16"/>
         <g opacity=".75">
           <line x1="210" y1="190" x2="250" y2="178" stroke="#93c5fd" stroke-width="2"/>
@@ -244,11 +263,6 @@
           <line x1="210" y1="302" x2="250" y2="290" stroke="#93c5fd" stroke-width="2"/>
         </g>
         <path class="thinGlass" d="M230 166 L230 125 L315 125"/>
-        <g id="joint" class="groundJoint">
-          <path d="M286 116 L317 129 L312 142 L281 129 Z"/>
-          <line x1="292" y1="119" x2="287" y2="132"/>
-          <line x1="303" y1="123" x2="298" y2="137"/>
-        </g>
         <line x1="255" y1="110" x2="255" y2="165" stroke="#fca5a5" stroke-width="5" stroke-linecap="round"/>
         <circle cx="255" cy="166" r="9" fill="#fca5a5"/>
 
@@ -269,9 +283,9 @@
         <path id="vapourPath" class="vapour" d="M230 320 L230 165 L315 125 L525 210"/>
 
         <!-- receivers -->
-        <rect class="glass" x="448" y="445" width="58" height="110" rx="11"/>
-        <rect class="glass" x="535" y="445" width="58" height="110" rx="11"/>
-        <rect class="glass" x="622" y="445" width="58" height="110" rx="11"/>
+        <path class="openVessel" d="M448 445 L448 555 L506 555 L506 445"/>
+        <path class="openVessel" d="M535 445 L535 555 L593 555 L593 445"/>
+        <path class="openVessel" d="M622 445 L622 555 L680 555 L680 445"/>
         <g class="receiverScales">
           <line class="scaleLine" x1="494" y1="530" x2="503" y2="530"/><line class="scaleLine" x1="494" y1="505" x2="503" y2="505"/><line class="scaleLine" x1="494" y1="480" x2="503" y2="480"/>
           <line class="scaleLine" x1="581" y1="530" x2="590" y2="530"/><line class="scaleLine" x1="581" y1="505" x2="590" y2="505"/><line class="scaleLine" x1="581" y1="480" x2="590" y2="480"/>
@@ -403,19 +417,19 @@ const DATA = {
 
 const I18N = {
   de:{
-    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.8.4 – korrigierter Teststand mit plausiblerer Fraktionierung",
+    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.8.5 – korrigierter Teststand mit plausiblerer Fraktionierung",
     language:"Sprache", controls:"Einstellungen", mixture:"Gemisch", totalVolume:"Gesamtvolumen", startComposition:"Startanteil Komponente A",
     columnPower:"Säulenleistung", simpleDistillation:"einfache Destillation", shortColumn:"kurze Kolonne", mediumColumn:"mittlere Kolonne", goodColumn:"gute Kolonne",
     heatPower:"Heizleistung", low:"niedrig", medium:"mittel", high:"hoch", timeScale:"Zeitmaßstab", fractionMode:"Fraktionswechsel",
     autoFraction:"automatisch", manualFraction:"manuell", start:"Start", pause:"Pause", reset:"Zurücksetzen", switchFraction:"Fraktion wechseln",
-    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.4 bewusst nicht berücksichtigt.",
+    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.5 bewusst nicht berücksichtigt.",
     apparatusTitle:"Apparatur", dashboard:"Messwerte", potTemperature:"Sumpftemperatur", headTemperature:"Kopftemperatur", potVolume:"Kolbeninhalt",
     totalDistillate:"Destillat gesamt", fraction1:"Fraktion 1", fraction2:"Mischfraktion", fraction3:"Fraktion 2", liquidComposition:"Zusammensetzung im Kolben",
     vapourComposition:"Dampf am Kopf", simTime:"Simulationszeit", status:"Status", chartTitle:"Temperaturverlauf", activeCollection:"Aktive Sammlung", liveView:"Live-Ansicht", fullView:"Gesamtverlauf", ready:"bereit", heating:"heizt auf",
     distilling:"destilliert", finished:"beendet", component:"Komponente", hazards:"Gefahrenkennzeichnung", volatile:"flüchtigere Komponente"
   },
   en:{
-    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.8.4 – corrected test build with more plausible fractionation",
+    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.8.5 – corrected test build with more plausible fractionation",
     language:"Language", controls:"Settings", mixture:"Mixture", totalVolume:"Total volume", startComposition:"Initial share of component A",
     columnPower:"Column performance", simpleDistillation:"simple distillation", shortColumn:"short column", mediumColumn:"medium column", goodColumn:"good column",
     heatPower:"Heating power", low:"low", medium:"medium", high:"high", timeScale:"Time scale", fractionMode:"Fraction switching",
@@ -536,6 +550,7 @@ function initState(){
   state = {
     timeMin:0, tempPot:22, tempHead:22, activeFraction:0, manualFraction:0,
     potVol:[volA, volB],
+    startVol:[volA, volB],
     fractions:[[0,0],[0,0],[0,0]],
     history:[], finished:false,
     lastYA:null, autoCandidate:0, autoHold:0, hasStartedBoiling:false
@@ -576,7 +591,7 @@ function simStep(){
     state.tempPot = bp;
     const stages = Number($("columnSelect").value);
     const yRaw = enrichThroughColumn(xA,bp,A,B,stages,heat.eff);
-    // V0.8.4: Beim ersten Sieden Kopfzusammensetzung direkt setzen.
+    // V0.8.5: Beim ersten Sieden Kopfzusammensetzung direkt setzen.
     // Dadurch fällt zu Beginn kein künstlicher Anteil in die Mischfraktion.
     if(!state.hasStartedBoiling || state.lastYA===null){
       state.lastYA = yRaw;
@@ -623,7 +638,7 @@ function targetFractionFromComposition(yA){
 }
 function chooseFraction(yA){
   if($("fractionModeSelect").value==="manual") return state.manualFraction;
-  // Automatik V0.8.4: gemischabhängige Grenzen plus Hysterese.
+  // Automatik V0.8.5: gemischabhängige Grenzen plus Hysterese.
   // Gemischabhängige Grenzen und Kopf-Holdup verhindern zu abrupte oder zu breite Übergangsbereiche.
   const m=currentMixture();
   const hold=(m.cut && m.cut.hold) || 3;
@@ -762,11 +777,39 @@ function updatePurityDisplay(){
       barEl.style.width = "0%";
     }else{
       const nameA=solventName(m.a), nameB=solventName(m.b);
-      mainEl.textContent = `${fmt(c.vol)} mL · ${nameA} ${fmt(c.fracA*100,0)} % / ${nameB} ${fmt((1-c.fracA)*100,0)} %`;
-      valEl.textContent = `${lang==="de"?"Hauptkomponente":"Main component"}: ${solventName(c.main)} · ${fmt(c.purity*100,0)} %`;
+      mainEl.textContent = `${fmt(c.vol,1)} mL gesamt · ${nameA} ${fmt(c.fracA*100,1)} % / ${nameB} ${fmt((1-c.fracA)*100,1)} %`;
+      valEl.textContent = `${fmt(c.a,1)} mL ${nameA} + ${fmt(c.b,1)} mL ${nameB} · ${lang==="de"?"Reinheit":"purity"} ${fmt(c.purity*100,1)} %`;
       barEl.style.width = `${Math.max(0,Math.min(100,c.fracA*100))}%`;
     }
   }
+  updateBalanceDisplay();
+}
+
+function componentBalance(){
+  if(!state) return null;
+  const start=state.startVol || [0,0];
+  const fracA=state.fractions.reduce((s,f)=>s+f[0],0);
+  const fracB=state.fractions.reduce((s,f)=>s+f[1],0);
+  const currentA=state.potVol[0] + fracA;
+  const currentB=state.potVol[1] + fracB;
+  const diffA=currentA - start[0], diffB=currentB - start[1];
+  const maxDiff=Math.max(Math.abs(diffA),Math.abs(diffB));
+  return {diffA,diffB,maxDiff};
+}
+
+function updateBalanceDisplay(){
+  const hint=$("infoHint");
+  if(!hint || !state) return;
+  const b=componentBalance();
+  if(!b) return;
+  const cls=b.maxDiff < 0.05 ? "balanceOk" : (b.maxDiff < 0.5 ? "balanceWarn" : "balanceBad");
+  const base = lang==="de"
+    ? "Modellhinweis: idealisierte binäre Gemische; keine Wasserverunreinigungen, keine Aktivitätskoeffizienten."
+    : "Model note: idealized binary mixtures; no water impurities, no activity coefficients.";
+  const text = lang==="de"
+    ? `Bilanzprüfung: ΔA ${fmt(b.diffA,2)} mL, ΔB ${fmt(b.diffB,2)} mL`
+    : `Balance check: ΔA ${fmt(b.diffA,2)} mL, ΔB ${fmt(b.diffB,2)} mL`;
+  hint.innerHTML = `${base}<div class="balanceLine ${cls}">${text}</div>`;
 }
 
 function updateEndReport(){
@@ -782,9 +825,10 @@ function updateEndReport(){
   const rows=[0,1,2].map(i=>{
     const c=fractionComposition(i);
     const label=[t("fraction1"),t("fraction2"),t("fraction3")][i];
-    const comp=c.vol>0 ? `${solventName(m.a)} ${fmt(c.fracA*100,0)} % / ${solventName(m.b)} ${fmt((1-c.fracA)*100,0)} %` : "–";
-    const purity=c.vol>0 ? `${fmt(c.purity*100,0)} %` : "–";
-    return `<tr><td>${label}</td><td>${fmt(c.vol)} mL</td><td>${comp}</td><td>${purity}</td></tr>`;
+    const comp=c.vol>0 ? `${solventName(m.a)} ${fmt(c.fracA*100,1)} % / ${solventName(m.b)} ${fmt((1-c.fracA)*100,1)} %` : "–";
+    const purity=c.vol>0 ? `${fmt(c.purity*100,1)} %` : "–";
+    const contains=c.vol>0 ? `${fmt(c.a,1)} mL + ${fmt(c.b,1)} mL` : "–";
+    return `<tr><td>${label}</td><td>${fmt(c.vol,1)} mL</td><td>${comp}<br><span class="infoHint">${contains}</span></td><td>${purity}</td></tr>`;
   }).join("");
   const qualityLine = lang==="de"
     ? `Trennqualität: <span class="stars">${q.stars}</span> ${q.label}`
