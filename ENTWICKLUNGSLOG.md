@@ -198,3 +198,34 @@ Korrektur, nachdem die zuvor bereitgestellte 0.8.3 inhaltlich noch auf 0.8.2 ste
 - Beim Start der Destillation sollte kein anfänglicher 1-mL-Anteil mehr in der Mischfraktion gesammelt werden.
 - Beim Tropfenlauf sollte kein dunkler Trapezbereich mehr zwischen Kolonne und Kühler erscheinen.
 - Die Datei ist bewusst als `FIX` gekennzeichnet, um sie sicher von der fehlerhaft bereitgestellten 0.8.3 zu unterscheiden.
+
+## Phase 7 – Version 0.8.4
+
+Stabilisierungsversion auf Basis der funktionierenden Version 0.8.3 FIX. Schwerpunkt: Übergang vom reinen Simulator zum auswertbaren virtuellen Lernlabor.
+
+### Neue Funktionen
+- Dynamisches Infoboard unter der Apparatur:
+  - erklärt die aktuelle Phase der Destillation sprachlich
+  - unterscheidet Aufheizen, Fraktion 1, Mischfraktion, Fraktion 2 und Ende
+  - passt Stoffnamen automatisch an das gewählte Gemisch an
+- Berechnete Zusammensetzung der Fraktionen:
+  - Volumen je Fraktion
+  - Zusammensetzung aus Komponente A und B
+  - Hauptkomponente und berechnete Reinheit
+  - kleine Farbbalken zur schnellen visuellen Erfassung
+- Endauswertung nach Abschluss:
+  - tabellarische Übersicht über alle Fraktionen
+  - berechnete Reinheit je Fraktion
+  - einfache Trennqualitätsbewertung mit Sternen
+  - Hinweis zur Wirkung von Heizleistung und Kolonnenleistung
+
+### Didaktische Zielsetzung
+- Die App soll nicht nur den Ablauf zeigen, sondern den Destillationsprozess erklären.
+- Die Fraktionen werden als auswertbare Produkte sichtbar.
+- Die Grundlage für spätere virtuelle Messungen wie Dichte, Brechungsindex und Siedebereich ist vorbereitet.
+
+### Noch offen
+- Feintuning der absoluten Fraktionsvolumina.
+- CSV-Export.
+- Virtuelle Messungen der Fraktionen.
+- Aufgaben-/Challenge-Modus.
