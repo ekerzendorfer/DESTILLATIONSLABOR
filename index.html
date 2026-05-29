@@ -96,13 +96,35 @@
     .selectorArm{fill:none;stroke:#bae6fd;stroke-width:6;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(56,189,248,.45));transition:d .25s}
     @media(max-width:1250px){.wrap{grid-template-columns:360px 1fr}.right{grid-column:1/-1}}
     @media(max-width:850px){.wrap{grid-template-columns:1fr}.apparatus{min-height:610px}.apparatus > svg{height:560px}}
+  
+    .infoBoard{margin-top:14px;padding:14px 16px;border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.72);border-radius:16px}
+    .infoBoard h3{margin:0 0 8px;font-size:1.02rem;color:#e0f2fe}
+    .infoBoard p{margin:0;color:#dbeafe;line-height:1.45}
+    .infoHint{margin-top:8px;color:var(--muted);font-size:.88rem;line-height:1.35}
+    .purityGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+    .purityCard{border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.58);border-radius:14px;padding:10px}
+    .purityCard .pTitle{font-weight:800;color:#e5f3ff;margin-bottom:6px}
+    .purityCard .pMain{font-size:.92rem;color:#bfdbfe}
+    .purityCard .pVal{font-size:1.05rem;font-weight:850;color:#f8fafc;margin-top:2px}
+    .miniBar{height:8px;border-radius:999px;overflow:hidden;background:rgba(251,191,36,.55);margin-top:7px}
+    .miniBar span{display:block;height:100%;background:#60a5fa;width:50%}
+    .endReport{display:none;margin-top:12px;border:1px solid rgba(34,197,94,.35);background:rgba(20,83,45,.16);border-radius:14px;padding:12px}
+    .endReport.show{display:block}
+    .endReport h3{margin:0 0 8px;color:#bbf7d0;font-size:1rem}
+    .endReport table{width:100%;border-collapse:collapse;font-size:.9rem}
+    .endReport th,.endReport td{padding:5px 6px;border-bottom:1px solid rgba(148,163,184,.18);text-align:left}
+    .endReport th{color:#dbeafe}
+    .endReport td{color:#f8fafc}
+    .stars{letter-spacing:1px;color:#fde68a;font-weight:900}
+    @media(max-width:850px){.purityGrid{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
 <header>
   <div>
     <h1 data-i18n="appTitle">Virtuelle fraktionierende Destillation</h1>
-    <div class="sub" data-i18n="subtitle">Version 0.8.3 FIX – korrigierter Teststand mit plausiblerer Fraktionierung</div>
+    <div class="sub" data-i18n="subtitle">Version 0.8.4 – korrigierter Teststand mit plausiblerer Fraktionierung</div>
   </div>
   <div class="lang">
     <span class="small" data-i18n="language">Sprache</span>
@@ -170,7 +192,7 @@
 
       <hr style="border-color:rgba(148,163,184,.16);margin:16px 0">
       <div class="note" data-i18n="modelNote">
-        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.3 FIX bewusst nicht berücksichtigt.
+        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.4 bewusst nicht berücksichtigt.
       </div>
     </div>
   </section>
@@ -262,6 +284,39 @@
         <text x="564" y="578" text-anchor="middle" fill="#cbd5e1" font-size="14">F2</text>
         <text x="651" y="578" text-anchor="middle" fill="#cbd5e1" font-size="14">F3</text>
       </svg>
+      <div class="infoBoard" id="infoBoard">
+        <h3 data-i18n="infoBoardTitle">Was passiert gerade?</h3>
+        <p id="infoText">Die Simulation ist bereit. Wähle Gemisch, Startzusammensetzung, Heizleistung und Kolonne und starte die Destillation.</p>
+        <div class="infoHint" id="infoHint">Modellhinweis: idealisierte binäre Gemische; keine Wasserverunreinigungen, keine Aktivitätskoeffizienten.</div>
+      </div>
+      <div class="infoBoard">
+        <h3 data-i18n="purityTitle">Berechnete Zusammensetzung der Fraktionen</h3>
+        <div class="purityGrid">
+          <div class="purityCard">
+            <div class="pTitle" data-i18n="fraction1">Fraktion 1</div>
+            <div class="pMain" id="purityF1Main">–</div>
+            <div class="pVal" id="purityF1Val">–</div>
+            <div class="miniBar"><span id="purityF1Bar"></span></div>
+          </div>
+          <div class="purityCard">
+            <div class="pTitle" data-i18n="fraction2">Mischfraktion</div>
+            <div class="pMain" id="purityF2Main">–</div>
+            <div class="pVal" id="purityF2Val">–</div>
+            <div class="miniBar"><span id="purityF2Bar"></span></div>
+          </div>
+          <div class="purityCard">
+            <div class="pTitle" data-i18n="fraction3">Fraktion 2</div>
+            <div class="pMain" id="purityF3Main">–</div>
+            <div class="pVal" id="purityF3Val">–</div>
+            <div class="miniBar"><span id="purityF3Bar"></span></div>
+          </div>
+        </div>
+        <div class="infoHint" data-i18n="purityHint">Die Werte sind berechnete Modellzusammensetzungen, keine experimentellen Analysen.</div>
+      </div>
+      <div class="endReport" id="endReport">
+        <h3 data-i18n="endReportTitle">Endauswertung</h3>
+        <div id="endReportContent"></div>
+      </div>
       <div class="legend" id="apparatusLegend">F1 = niedrig siedende Fraktion · F2 = Mischfraktion · F3 = höher siedende Fraktion</div>
     </div>
   </section>
@@ -348,19 +403,19 @@ const DATA = {
 
 const I18N = {
   de:{
-    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.8.3 FIX – korrigierter Teststand mit plausiblerer Fraktionierung",
+    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.8.4 – korrigierter Teststand mit plausiblerer Fraktionierung",
     language:"Sprache", controls:"Einstellungen", mixture:"Gemisch", totalVolume:"Gesamtvolumen", startComposition:"Startanteil Komponente A",
     columnPower:"Säulenleistung", simpleDistillation:"einfache Destillation", shortColumn:"kurze Kolonne", mediumColumn:"mittlere Kolonne", goodColumn:"gute Kolonne",
     heatPower:"Heizleistung", low:"niedrig", medium:"mittel", high:"hoch", timeScale:"Zeitmaßstab", fractionMode:"Fraktionswechsel",
     autoFraction:"automatisch", manualFraction:"manuell", start:"Start", pause:"Pause", reset:"Zurücksetzen", switchFraction:"Fraktion wechseln",
-    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.3 FIX bewusst nicht berücksichtigt.",
+    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.4 bewusst nicht berücksichtigt.",
     apparatusTitle:"Apparatur", dashboard:"Messwerte", potTemperature:"Sumpftemperatur", headTemperature:"Kopftemperatur", potVolume:"Kolbeninhalt",
     totalDistillate:"Destillat gesamt", fraction1:"Fraktion 1", fraction2:"Mischfraktion", fraction3:"Fraktion 2", liquidComposition:"Zusammensetzung im Kolben",
     vapourComposition:"Dampf am Kopf", simTime:"Simulationszeit", status:"Status", chartTitle:"Temperaturverlauf", activeCollection:"Aktive Sammlung", liveView:"Live-Ansicht", fullView:"Gesamtverlauf", ready:"bereit", heating:"heizt auf",
     distilling:"destilliert", finished:"beendet", component:"Komponente", hazards:"Gefahrenkennzeichnung", volatile:"flüchtigere Komponente"
   },
   en:{
-    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.8.3 FIX – corrected test build with more plausible fractionation",
+    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.8.4 – corrected test build with more plausible fractionation",
     language:"Language", controls:"Settings", mixture:"Mixture", totalVolume:"Total volume", startComposition:"Initial share of component A",
     columnPower:"Column performance", simpleDistillation:"simple distillation", shortColumn:"short column", mediumColumn:"medium column", goodColumn:"good column",
     heatPower:"Heating power", low:"low", medium:"medium", high:"high", timeScale:"Time scale", fractionMode:"Fraction switching",
@@ -521,7 +576,7 @@ function simStep(){
     state.tempPot = bp;
     const stages = Number($("columnSelect").value);
     const yRaw = enrichThroughColumn(xA,bp,A,B,stages,heat.eff);
-    // V0.8.3 FIX: Beim ersten Sieden Kopfzusammensetzung direkt setzen.
+    // V0.8.4: Beim ersten Sieden Kopfzusammensetzung direkt setzen.
     // Dadurch fällt zu Beginn kein künstlicher Anteil in die Mischfraktion.
     if(!state.hasStartedBoiling || state.lastYA===null){
       state.lastYA = yRaw;
@@ -568,7 +623,7 @@ function targetFractionFromComposition(yA){
 }
 function chooseFraction(yA){
   if($("fractionModeSelect").value==="manual") return state.manualFraction;
-  // Automatik V0.8.3 FIX: gemischabhängige Grenzen plus Hysterese.
+  // Automatik V0.8.4: gemischabhängige Grenzen plus Hysterese.
   // Gemischabhängige Grenzen und Kopf-Holdup verhindern zu abrupte oder zu breite Übergangsbereiche.
   const m=currentMixture();
   const hold=(m.cut && m.cut.hold) || 3;
@@ -626,6 +681,126 @@ function setChartMode(mode){
   updateChart();
 }
 
+
+function fractionComposition(i){
+  if(!state) return {vol:0, a:0, b:0, fracA:0, purity:0, main:""};
+  const f=state.fractions[i];
+  const vol=f[0]+f[1];
+  const fracA=vol>0 ? f[0]/vol : 0;
+  const purity=vol>0 ? Math.max(fracA,1-fracA) : 0;
+  const m=currentMixture();
+  const main=vol>0 ? (fracA>=0.5 ? m.a : m.b) : "";
+  return {vol,a:f[0],b:f[1],fracA,purity,main};
+}
+
+function separationQuality(){
+  if(!state) return {score:0,label:"–",stars:""};
+  const f1=fractionComposition(0), f2=fractionComposition(1), f3=fractionComposition(2);
+  const total=totalDistillate() || 1;
+  const mixedPenalty=Math.min(1, f2.vol/total);
+  const purityAvg=((f1.vol>0?f1.purity:0)+(f3.vol>0?f3.purity:0))/2;
+  let score=Math.round((purityAvg*0.75 + (1-mixedPenalty)*0.25)*5);
+  if(totalDistillate()<5) score=0;
+  score=Math.max(0,Math.min(5,score));
+  const labelsDe=["noch keine Bewertung","sehr schwach","schwach","mittel","gut","sehr gut"];
+  const labelsEn=["no rating yet","very weak","weak","moderate","good","very good"];
+  return {score,label:(lang==="de"?labelsDe:labelsEn)[score],stars:"★★★★★".slice(0,score)+"☆☆☆☆☆".slice(0,5-score)};
+}
+
+function processInfoText(){
+  if(!state) return lang==="de"
+    ? "Die Simulation ist bereit. Wähle Gemisch, Startzusammensetzung, Heizleistung und Kolonne und starte die Destillation."
+    : "The simulation is ready. Choose mixture, starting composition, heating power and column, then start distillation.";
+  const m=currentMixture();
+  const A=solventName(m.a), B=solventName(m.b);
+  const pot=potTotalVol();
+  const dist=totalDistillate();
+  const active=state.activeFraction;
+  const y=state.lastYA===null ? null : state.lastYA;
+  if(state.finished){
+    return lang==="de"
+      ? `Die Destillation ist abgeschlossen. Vergleiche nun Volumina und berechnete Reinheiten der Fraktionen. Der Rückstand im Kolben beträgt noch ${fmt(pot)} mL.`
+      : `The distillation is complete. Compare the volumes and calculated purities of the fractions. ${fmt(pot)} mL remains in the pot.`;
+  }
+  if(!running && dist===0 && state.tempPot<30){
+    return lang==="de"
+      ? "Die Simulation ist bereit. Noch wird nicht geheizt und kein Destillat gesammelt."
+      : "The simulation is ready. Heating has not started and no distillate is being collected.";
+  }
+  if(y===null || totalDistillate()===0 && state.tempPot < Math.min(DATA.solvents[m.a].bp,DATA.solvents[m.b].bp)-5){
+    return lang==="de"
+      ? `Die Flüssigkeit wird erwärmt. Noch erreicht kein stabiler Dampf den Kolonnenkopf; daher wird noch kein Destillat gesammelt.`
+      : `The liquid is being heated. No stable vapour reaches the column head yet, so no distillate is collected.`;
+  }
+  if(active===0){
+    return lang==="de"
+      ? `Der Dampf am Kolonnenkopf ist stark an ${A} angereichert. Die Kolonne verstärkt diese Anreicherung; deshalb wird derzeit Fraktion 1 gesammelt.`
+      : `The vapour at the column head is strongly enriched in ${A}. The column increases this enrichment, so fraction 1 is currently collected.`;
+  }
+  if(active===1){
+    return lang==="de"
+      ? `Die Zusammensetzung am Kolonnenkopf ändert sich deutlich. Der Dampf enthält nun merkliche Anteile beider Komponenten; daher wird die Mischfraktion gesammelt.`
+      : `The composition at the column head is changing noticeably. The vapour now contains substantial amounts of both components, so the mixed fraction is collected.`;
+  }
+  return lang==="de"
+    ? `${A} ist im Kolben weitgehend abgereichert. Nun geht überwiegend ${B} über; deshalb wird Fraktion 2 gesammelt.`
+    : `${A} has largely been depleted from the pot. Mostly ${B} is now distilling, so fraction 2 is collected.`;
+}
+
+function updatePurityDisplay(){
+  if(!state) return;
+  const m=currentMixture();
+  for(let i=0;i<3;i++){
+    const c=fractionComposition(i);
+    const mainEl=$(`purityF${i+1}Main`);
+    const valEl=$(`purityF${i+1}Val`);
+    const barEl=$(`purityF${i+1}Bar`);
+    if(!mainEl || !valEl || !barEl) continue;
+    if(c.vol<=0.001){
+      mainEl.textContent = lang==="de" ? "noch leer" : "empty";
+      valEl.textContent = "–";
+      barEl.style.width = "0%";
+    }else{
+      const nameA=solventName(m.a), nameB=solventName(m.b);
+      mainEl.textContent = `${fmt(c.vol)} mL · ${nameA} ${fmt(c.fracA*100,0)} % / ${nameB} ${fmt((1-c.fracA)*100,0)} %`;
+      valEl.textContent = `${lang==="de"?"Hauptkomponente":"Main component"}: ${solventName(c.main)} · ${fmt(c.purity*100,0)} %`;
+      barEl.style.width = `${Math.max(0,Math.min(100,c.fracA*100))}%`;
+    }
+  }
+}
+
+function updateEndReport(){
+  const box=$("endReport"), content=$("endReportContent");
+  if(!box || !content || !state) return;
+  if(!state.finished){
+    box.classList.remove("show");
+    content.innerHTML="";
+    return;
+  }
+  const m=currentMixture();
+  const q=separationQuality();
+  const rows=[0,1,2].map(i=>{
+    const c=fractionComposition(i);
+    const label=[t("fraction1"),t("fraction2"),t("fraction3")][i];
+    const comp=c.vol>0 ? `${solventName(m.a)} ${fmt(c.fracA*100,0)} % / ${solventName(m.b)} ${fmt((1-c.fracA)*100,0)} %` : "–";
+    const purity=c.vol>0 ? `${fmt(c.purity*100,0)} %` : "–";
+    return `<tr><td>${label}</td><td>${fmt(c.vol)} mL</td><td>${comp}</td><td>${purity}</td></tr>`;
+  }).join("");
+  const qualityLine = lang==="de"
+    ? `Trennqualität: <span class="stars">${q.stars}</span> ${q.label}`
+    : `Separation quality: <span class="stars">${q.stars}</span> ${q.label}`;
+  content.innerHTML = `
+    <div style="margin-bottom:8px">${qualityLine}</div>
+    <table>
+      <thead><tr><th>${lang==="de"?"Fraktion":"Fraction"}</th><th>${lang==="de"?"Volumen":"Volume"}</th><th>${lang==="de"?"Zusammensetzung":"Composition"}</th><th>${lang==="de"?"Reinheit":"Purity"}</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="infoHint">${lang==="de"
+      ? "Hinweis: Eine geringere Heizleistung oder eine bessere Kolonne kann die Reinheit erhöhen, verlängert aber die Destillation."
+      : "Note: Lower heating power or a better column may improve purity, but makes the distillation slower."}</div>`;
+  box.classList.add("show");
+}
+
 function render(){
   if(!state) return;
   const m=currentMixture(), A=DATA.solvents[m.a], B=DATA.solvents[m.b];
@@ -655,6 +830,9 @@ function render(){
   $("vapourBarA").style.width=`${Math.max(0,Math.min(100,yDisplay*100))}%`;
   const fracNames=[t("fraction1"),t("fraction2"),t("fraction3")];
   $("activeCollectionText").textContent=fracNames[state.activeFraction];
+  if($("infoText")) $("infoText").textContent = processInfoText();
+  updatePurityDisplay();
+  updateEndReport();
   $("simTime").textContent = `${Math.floor(state.timeMin)}:${String(Math.floor((state.timeMin%1)*60)).padStart(2,"0")}`;
 
   const initialV=Number($("volumeRange").value);
