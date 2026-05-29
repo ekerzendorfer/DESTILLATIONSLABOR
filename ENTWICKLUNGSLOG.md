@@ -173,3 +173,28 @@ Besonders zu prüfen:
 3. Ob Aceton/Toluol bei mittlerer Kolonne zumindest eine kleine, aber nicht übertriebene Mischfraktion zeigt.
 4. Ob Methanol/Ethanol keine übermäßig große Mischfraktion mehr bildet.
 5. Ob Cyclohexan/Toluol weiterhin ungefähr im plausiblen Bereich bleibt.
+
+## Phase 6 – Version 0.8.3 FIX
+
+Korrektur, nachdem die zuvor bereitgestellte 0.8.3 inhaltlich noch auf 0.8.2 stehengeblieben war.
+
+### Fehlerkorrekturen
+- Sichtbare Versionskennung auf `Version 0.8.3 FIX` gesetzt.
+- Startfehler der automatischen Fraktionierung korrigiert:
+  - `lastYA` startet nun als `null` statt als neutraler Wert `0.5`.
+  - Beim ersten Sieden wird die Kopfzusammensetzung direkt aus dem berechneten Gleichgewichtswert gesetzt.
+  - Aktive Fraktion, Kandidat und Hysterese werden beim ersten Sieden konsistent initialisiert.
+  - Dadurch sollte zu Beginn nicht mehr ein kleiner künstlicher Anteil in der Mischfraktion landen.
+- Kühlergrafik entschärft:
+  - Der schräge Kühlerkörper wird nur noch als Glas-Outline gezeichnet.
+  - Das dunkle trapezförmige Artefakt zwischen Kolonne und Kühler sollte dadurch verschwinden.
+- Dampfpfad im Kühler optisch schwächer gezeichnet, damit keine dunkle Überlagerung entsteht.
+- Fraktionsgrenzen leicht nachkalibriert:
+  - Aceton/Toluol: kleine Mischfraktion eher sichtbar.
+  - Methanol/Ethanol: Mischfraktion gegenüber der zu breiten 0.8.1 reduziert.
+  - Ethylacetat/1-Butanol: Startverhalten stabilisiert.
+
+### Prüfhinweise
+- Beim Start der Destillation sollte kein anfänglicher 1-mL-Anteil mehr in der Mischfraktion gesammelt werden.
+- Beim Tropfenlauf sollte kein dunkler Trapezbereich mehr zwischen Kolonne und Kühler erscheinen.
+- Die Datei ist bewusst als `FIX` gekennzeichnet, um sie sicher von der fehlerhaft bereitgestellten 0.8.3 zu unterscheiden.
