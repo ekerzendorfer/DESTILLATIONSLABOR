@@ -229,3 +229,33 @@ Stabilisierungsversion auf Basis der funktionierenden Version 0.8.3 FIX. Schwerp
 - CSV-Export.
 - Virtuelle Messungen der Fraktionen.
 - Aufgaben-/Challenge-Modus.
+
+## Phase 8 – Version 0.8.5
+
+Kleine Konsolidierungs- und Plausibilitätsversion. Es wurden bewusst keine neuen Großfeatures ergänzt.
+
+### Änderungen
+- Sichtbare Versionskennung auf `Version 0.8.5` gesetzt.
+- Interne Startvolumina der beiden Komponenten werden gespeichert (`startVol`).
+- Laufende Bilanzprüfung ergänzt:
+  - Summe aus Kolbenrest und Fraktionen wird mit dem Startvolumen verglichen.
+  - Anzeige als ΔA und ΔB im Infoboard.
+  - Kleine Rundungsabweichungen werden toleriert.
+- Fraktionsanzeige präzisiert:
+  - Gesamtvolumen der Fraktion wird ausdrücklich als Gesamtvolumen angezeigt.
+  - Zusammensetzung wird mit einer Nachkommastelle ausgegeben.
+  - Zusätzlich werden die enthaltenen Teilvolumina beider Komponenten angezeigt.
+  - Dadurch soll verhindert werden, dass Gesamtvolumen und Reinstoffvolumen verwechselt werden.
+- Endauswertung präzisiert:
+  - Prozentzusammensetzung mit einer Nachkommastelle.
+  - Teilvolumina der Komponenten in jeder Fraktion.
+- Apparatur leicht verfeinert:
+  - Schliffverbindung zwischen Kolben und Kolonne ergänzt.
+  - Seitlicher Ansatz für das Sumpfthermometer angedeutet.
+  - Auffanggefäße als oben offene Gefäße gezeichnet.
+  - Verbindungsschliff am Kühler entfernt/reduziert.
+
+### Noch offen
+- Feinkalibrierung der Fraktionsgrenzen, besonders bei Aceton/Toluol.
+- Virtuelle Messwerte der Fraktionen.
+- CSV-Export.
