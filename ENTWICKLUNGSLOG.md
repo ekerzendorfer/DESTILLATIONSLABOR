@@ -141,3 +141,35 @@ Ausgangspunkt waren erste Tests von Version 0.8.1 im Browser und im GitHub-Pages
 
 ### Didaktische Einordnung
 - Die App bleibt bewusst ein didaktisch vereinfachtes Modell. Die aktuellen Anpassungen dienen nicht der exakten Prozesssimulation, sondern einer plausibleren und besser interpretierbaren Darstellung des Zusammenhangs von Heizleistung, Kolonnenleistung, Dampfzusammensetzung und Fraktionsbildung.
+
+## Phase 6 – Version 0.8.3: Startkorrektur und bereinigte Kühlergrafik
+
+- Version auf **0.8.3** gesetzt.
+- Fehler beim Start der automatischen Fraktionierung korrigiert:
+  - Die Kopf-/Dampfzusammensetzung startet beim ersten Sieden nun direkt mit der tatsächlich berechneten Zusammensetzung.
+  - Dadurch fällt zu Beginn nicht mehr fälschlich ein kleines Volumen in die Mischfraktion.
+- Automatische Fraktionslogik weiter feinjustiert:
+  - gemischabhängige Reaktionsgeschwindigkeit des Kopf-/Kolonnen-Holdups eingeführt,
+  - Aceton/Toluol bleibt sehr leicht trennbar, soll aber nicht völlig ohne Übergangsbereich wirken,
+  - Methanol/Ethanol wurde gegenüber der zu breiten Mischfraktion vorsichtig entschärft,
+  - Cyclohexan/Toluol bleibt als plausibler Kalibrier-Anker weitgehend erhalten.
+- Kühler-/Verbindungsbereich grafisch bereinigt:
+  - der schräge Kühlerkörper wird nicht mehr als halbtransparent gefülltes Polygon, sondern als Glas-Outline gezeichnet,
+  - das störende dunkle trapezförmige Artefakt zwischen Kolonne und Kühler sollte damit verschwinden.
+- Tropfen-/Fraktionswechsler-Animation aus Version 0.8.2 beibehalten:
+  - der Auslassarm zeigt zum aktiven Auffanggefäß,
+  - die Tropfen fallen in das aktive Gefäß.
+- Zusammensetzungsanzeigen robust gemacht:
+  - vor dem Sieden wird für den Dampf eine plausible Gleichgewichtsanzeige berechnet,
+  - nach Beginn des Siedens wird die reale simulierte Kopfzusammensetzung angezeigt.
+- JavaScript-Syntax geprüft.
+
+### Hinweise für den nächsten Test
+
+Besonders zu prüfen:
+
+1. Ob das schwarze/trapezförmige Artefakt im Kühlerbereich verschwunden ist.
+2. Ob beim Start der Destillation kein kleines Volumen mehr fälschlich in der Mischfraktion landet.
+3. Ob Aceton/Toluol bei mittlerer Kolonne zumindest eine kleine, aber nicht übertriebene Mischfraktion zeigt.
+4. Ob Methanol/Ethanol keine übermäßig große Mischfraktion mehr bildet.
+5. Ob Cyclohexan/Toluol weiterhin ungefähr im plausiblen Bereich bleibt.
