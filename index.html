@@ -50,6 +50,7 @@
     .apparatus > svg{height:600px}
     svg{width:100%;height:100%;display:block}
     .glass{fill:rgba(147,197,253,.08);stroke:#93c5fd;stroke-width:3}
+    .condenserGlass{fill:none;stroke:#93c5fd;stroke-width:3;stroke-linejoin:round}
     .thinGlass{fill:none;stroke:#93c5fd;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
     .metal{stroke:#94a3b8;stroke-width:6;stroke-linecap:round}
     .heater{fill:#1f2937;stroke:#64748b;stroke-width:3}
@@ -64,8 +65,8 @@
     .bubble.run{animation:bubble 2s infinite ease-in}
     .b2{animation-delay:.5s}.b3{animation-delay:1s}.b4{animation-delay:1.4s}
     @keyframes bubble{0%{transform:translateY(20px);opacity:.05}40%{opacity:.45}100%{transform:translateY(-42px);opacity:0}}
-    .vapour{stroke:#e0f2fe;stroke-width:5;stroke-linecap:round;stroke-dasharray:10 13;opacity:0}
-    .vapour.run{animation:vap 1.6s linear infinite;opacity:.45}
+    .vapour{stroke:#e0f2fe;stroke-width:3;stroke-linecap:round;stroke-dasharray:8 14;opacity:0;fill:none}
+    .vapour.run{animation:vap 1.6s linear infinite;opacity:.32}
     @keyframes vap{to{stroke-dashoffset:-46}}
     .coolwater{stroke:#38bdf8;stroke-width:4;stroke-dasharray:8 10;animation:water 1.4s linear infinite}
     @keyframes water{to{stroke-dashoffset:-36}}
@@ -101,7 +102,7 @@
 <header>
   <div>
     <h1 data-i18n="appTitle">Virtuelle fraktionierende Destillation</h1>
-    <div class="sub" data-i18n="subtitle">Version 0.8.2 – korrigierter Teststand mit plausiblerer Fraktionierung</div>
+    <div class="sub" data-i18n="subtitle">Version 0.8.3 FIX – korrigierter Teststand mit plausiblerer Fraktionierung</div>
   </div>
   <div class="lang">
     <span class="small" data-i18n="language">Sprache</span>
@@ -169,7 +170,7 @@
 
       <hr style="border-color:rgba(148,163,184,.16);margin:16px 0">
       <div class="note" data-i18n="modelNote">
-        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.2 bewusst nicht berücksichtigt.
+        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.3 FIX bewusst nicht berücksichtigt.
       </div>
     </div>
   </section>
@@ -230,7 +231,7 @@
         <circle cx="255" cy="166" r="9" fill="#fca5a5"/>
 
         <path class="thinGlass" d="M315 125 L525 210"/>
-        <path class="glass" d="M298 108 L542 206 L532 231 L288 133 Z"/>
+        <path class="condenserGlass" d="M298 108 L542 206 L532 231 L288 133 Z"/>
         <rect class="port" x="515" y="224" width="22" height="13" rx="3"/>
         <text class="portLabel" x="541" y="236">Einlass</text>
         <rect class="port" x="306" y="95" width="22" height="13" rx="3"/>
@@ -338,28 +339,28 @@ const DATA = {
     ethylacetate: { de:"Ethylacetat", en:"Ethyl acetate", formula:"C₄H₈O₂", bp:77.1, density:0.902, mw:88.11, hazards:["GHS02","GHS07"], antoine:{A:7.10179,B:1244.951,C:217.881}}
   },
   mixtures: [
-    { id:"acetone_toluene", a:"acetone", b:"toluene", cut:{high:0.94,low:0.06,hold:2}, noteDe:"Großer Siedepunktunterschied – sehr gut für den Einstieg.", noteEn:"Large boiling point difference – very good starter example." },
+    { id:"acetone_toluene", a:"acetone", b:"toluene", cut:{high:0.92,low:0.08,hold:2}, noteDe:"Großer Siedepunktunterschied – sehr gut für den Einstieg.", noteEn:"Large boiling point difference – very good starter example." },
     { id:"cyclohexane_toluene", a:"cyclohexane", b:"toluene", cut:{high:0.88,low:0.12,hold:3}, noteDe:"Klassisches organisches Beispiel für fraktionierende Destillation.", noteEn:"Classic organic example for fractional distillation." },
-    { id:"methanol_ethanol", a:"methanol", b:"ethanol", cut:{high:0.78,low:0.22,hold:3}, noteDe:"Nahe Siedepunkte – Trennung deutlich schwieriger.", noteEn:"Close boiling points – separation is much harder." },
-    { id:"ethylacetate_butanol1", a:"ethylacetate", b:"butanol1", cut:{high:0.90,low:0.10,hold:3}, noteDe:"Ester/Alkohol-Beispiel mit deutlichem Siedepunktunterschied.", noteEn:"Ester/alcohol example with a distinct boiling point difference." }
+    { id:"methanol_ethanol", a:"methanol", b:"ethanol", cut:{high:0.82,low:0.18,hold:3}, noteDe:"Nahe Siedepunkte – Trennung deutlich schwieriger.", noteEn:"Close boiling points – separation is much harder." },
+    { id:"ethylacetate_butanol1", a:"ethylacetate", b:"butanol1", cut:{high:0.88,low:0.12,hold:2}, noteDe:"Ester/Alkohol-Beispiel mit deutlichem Siedepunktunterschied.", noteEn:"Ester/alcohol example with a distinct boiling point difference." }
   ]
 };
 
 const I18N = {
   de:{
-    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.8.2 – korrigierter Teststand mit plausiblerer Fraktionierung",
+    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.8.3 FIX – korrigierter Teststand mit plausiblerer Fraktionierung",
     language:"Sprache", controls:"Einstellungen", mixture:"Gemisch", totalVolume:"Gesamtvolumen", startComposition:"Startanteil Komponente A",
     columnPower:"Säulenleistung", simpleDistillation:"einfache Destillation", shortColumn:"kurze Kolonne", mediumColumn:"mittlere Kolonne", goodColumn:"gute Kolonne",
     heatPower:"Heizleistung", low:"niedrig", medium:"mittel", high:"hoch", timeScale:"Zeitmaßstab", fractionMode:"Fraktionswechsel",
     autoFraction:"automatisch", manualFraction:"manuell", start:"Start", pause:"Pause", reset:"Zurücksetzen", switchFraction:"Fraktion wechseln",
-    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.2 bewusst nicht berücksichtigt.",
+    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.3 FIX bewusst nicht berücksichtigt.",
     apparatusTitle:"Apparatur", dashboard:"Messwerte", potTemperature:"Sumpftemperatur", headTemperature:"Kopftemperatur", potVolume:"Kolbeninhalt",
     totalDistillate:"Destillat gesamt", fraction1:"Fraktion 1", fraction2:"Mischfraktion", fraction3:"Fraktion 2", liquidComposition:"Zusammensetzung im Kolben",
     vapourComposition:"Dampf am Kopf", simTime:"Simulationszeit", status:"Status", chartTitle:"Temperaturverlauf", activeCollection:"Aktive Sammlung", liveView:"Live-Ansicht", fullView:"Gesamtverlauf", ready:"bereit", heating:"heizt auf",
     distilling:"destilliert", finished:"beendet", component:"Komponente", hazards:"Gefahrenkennzeichnung", volatile:"flüchtigere Komponente"
   },
   en:{
-    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.8.2 – corrected test build with more plausible fractionation",
+    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.8.3 FIX – corrected test build with more plausible fractionation",
     language:"Language", controls:"Settings", mixture:"Mixture", totalVolume:"Total volume", startComposition:"Initial share of component A",
     columnPower:"Column performance", simpleDistillation:"simple distillation", shortColumn:"short column", mediumColumn:"medium column", goodColumn:"good column",
     heatPower:"Heating power", low:"low", medium:"medium", high:"high", timeScale:"Time scale", fractionMode:"Fraction switching",
@@ -482,7 +483,7 @@ function initState(){
     potVol:[volA, volB],
     fractions:[[0,0],[0,0],[0,0]],
     history:[], finished:false,
-    lastYA:0.5, autoCandidate:0, autoHold:0
+    lastYA:null, autoCandidate:0, autoHold:0, hasStartedBoiling:false
   };
   clearChart();
   logHistory();
@@ -520,9 +521,20 @@ function simStep(){
     state.tempPot = bp;
     const stages = Number($("columnSelect").value);
     const yRaw = enrichThroughColumn(xA,bp,A,B,stages,heat.eff);
-    // Kleiner Kolonnen-/Kopf-Holdup: verhindert unrealistisch abrupte Sprünge der Dampfzusammensetzung.
-    const headResponse = Math.max(0.14, 0.34 - stages*0.015);
-    state.lastYA += (yRaw - state.lastYA) * headResponse;
+    // V0.8.3 FIX: Beim ersten Sieden Kopfzusammensetzung direkt setzen.
+    // Dadurch fällt zu Beginn kein künstlicher Anteil in die Mischfraktion.
+    if(!state.hasStartedBoiling || state.lastYA===null){
+      state.lastYA = yRaw;
+      state.hasStartedBoiling = true;
+      const startTarget = targetFractionFromComposition(state.lastYA);
+      state.activeFraction = startTarget;
+      state.autoCandidate = startTarget;
+      state.autoHold = 0;
+    } else {
+      // Kleiner Kolonnen-/Kopf-Holdup: verhindert unrealistisch abrupte Sprünge der Dampfzusammensetzung.
+      const headResponse = Math.max(0.18, 0.38 - stages*0.016);
+      state.lastYA += (yRaw - state.lastYA) * headResponse;
+    }
     const yHead = Math.max(0, Math.min(1, state.lastYA));
     const headTarget = dewPoint(yHead,A,B);
     state.tempHead += (headTarget - state.tempHead) * 0.20;
@@ -556,7 +568,7 @@ function targetFractionFromComposition(yA){
 }
 function chooseFraction(yA){
   if($("fractionModeSelect").value==="manual") return state.manualFraction;
-  // Automatik V0.8.2: gemischabhängige Grenzen plus Hysterese.
+  // Automatik V0.8.3 FIX: gemischabhängige Grenzen plus Hysterese.
   // Gemischabhängige Grenzen und Kopf-Holdup verhindern zu abrupte oder zu breite Übergangsbereiche.
   const m=currentMixture();
   const hold=(m.cut && m.cut.hold) || 3;
@@ -590,7 +602,7 @@ function logHistory(){
   const [nA,nB]=potMoles(), xA=(nA+nB)>0?nA/(nA+nB):0;
   state.history.push({
     timeMin:state.timeMin, potTemp:state.tempPot, headTemp:state.tempHead,
-    potVol:potTotalVol(), dist:totalDistillate(), xA, yA:state.lastYA, fraction:state.activeFraction+1
+    potVol:potTotalVol(), dist:totalDistillate(), xA, yA:(state.lastYA===null?xA:state.lastYA), fraction:state.activeFraction+1
   });
   updateChart();
 }
@@ -637,9 +649,10 @@ function render(){
   const [nA,nB]=potMoles(), xA=(nA+nB)>0?nA/(nA+nB):0;
   const liquidVolA=potTotalVol()>0 ? state.potVol[0]/potTotalVol() : 0;
   $("liquidComp").textContent=`${solventName(m.a)} ${fmt(liquidVolA*100,0)} % / ${solventName(m.b)} ${fmt((1-liquidVolA)*100,0)} %`;
-  $("vapourComp").textContent=`${solventName(m.a)} ${fmt(state.lastYA*100,0)} % / ${solventName(m.b)} ${fmt((1-state.lastYA)*100,0)} %`;
+  const yDisplay = state.lastYA===null ? liquidVolA : state.lastYA;
+  $("vapourComp").textContent=`${solventName(m.a)} ${fmt(yDisplay*100,0)} % / ${solventName(m.b)} ${fmt((1-yDisplay)*100,0)} %`;
   $("liquidBarA").style.width=`${Math.max(0,Math.min(100,liquidVolA*100))}%`;
-  $("vapourBarA").style.width=`${Math.max(0,Math.min(100,state.lastYA*100))}%`;
+  $("vapourBarA").style.width=`${Math.max(0,Math.min(100,yDisplay*100))}%`;
   const fracNames=[t("fraction1"),t("fraction2"),t("fraction3")];
   $("activeCollectionText").textContent=fracNames[state.activeFraction];
   $("simTime").textContent = `${Math.floor(state.timeMin)}:${String(Math.floor((state.timeMin%1)*60)).padStart(2,"0")}`;
