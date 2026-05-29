@@ -259,3 +259,29 @@ Kleine Konsolidierungs- und Plausibilitätsversion. Es wurden bewusst keine neue
 - Feinkalibrierung der Fraktionsgrenzen, besonders bei Aceton/Toluol.
 - Virtuelle Messwerte der Fraktionen.
 - CSV-Export.
+
+## Phase 9 – Version 0.8.6
+
+Kleine Korrekturversion auf Basis der Rückmeldung zu einfacher Destillation und Thermometergeometrie.
+
+### Anlass
+- Bei Cyclohexan/Toluol mit einfacher Destillation und mittlerer Heizleistung wurde praktisch keine Fraktion 1 gesammelt, obwohl die Siedepunkte deutlich auseinanderliegen. Das war für das didaktische Modell zu pessimistisch.
+- Das rote Sumpfthermometer kreuzte den seitlichen Kolbenansatz optisch unglücklich.
+
+### Änderungen
+- Sumpfthermometer neu gezeichnet:
+  - Blauer seitlicher Ansatz bleibt erhalten.
+  - Rotes Thermometer steht nun senkrecht am äußeren Ende des Ansatzes.
+- Fraktionslogik für einfache und kurze Kolonnen verfeinert:
+  - Auch ohne nennenswerte Kolonne wird bei deutlich verschiedenen Siedepunkten eine erkennbare Anreicherung der leichter siedenden Komponente zugelassen.
+  - Die Fraktionsgrenzen werden dynamisch leicht angepasst:
+    - einfache/kurze Kolonne: etwas tolerantere Grenzen, damit nicht unrealistisch alles als Mischfraktion gezählt wird.
+    - gute Kolonne: strengere Trennung bleibt erhalten.
+  - Hohe Heizleistung verschmiert die Trennung weiterhin in Richtung schlechterer Fraktionen.
+- Gemischabhängige Modellparameter ergänzt:
+  - leicht trennbare Paare erhalten stärkere einfache Anreicherung.
+  - Methanol/Ethanol bleibt als schwierigeres Paar bewusst weniger gut trennbar.
+
+### Weiterhin offen
+- Feinkalibrierung der absoluten Fraktionsvolumina anhand mehrerer Testläufe.
+- Spätere virtuelle Messwerte der Fraktionen.
