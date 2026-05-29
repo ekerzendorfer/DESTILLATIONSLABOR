@@ -113,3 +113,31 @@ Ausgangspunkt war ein erster erfolgreicher Browser- und GitHub-Pages-Test der Ve
 - Messfunktionen für Siedebereich, Dichte und Brechungsindex der Fraktionen.
 - Weitere Verfeinerung der Kolonnenvisualisierung.
 - Eventuell Umschaltung zwischen didaktischem und stärker realitätsnahem Modell.
+
+## Phase 5 – Korrekturrunde Version 0.8.2
+
+Ausgangspunkt waren erste Tests von Version 0.8.1 im Browser und im GitHub-Pages-Repo. Dabei wurden mehrere Darstellungs- und Modellierungsprobleme sichtbar, die in Version 0.8.2 gezielt korrigiert wurden.
+
+### Beobachtungen aus dem Test
+- Die Legende F1/F2/F3 lag innerhalb der Apparaturgrafik und überdeckte den unteren Bereich der Heizhaube.
+- Bei Aceton/Toluol entstand unter mittleren Bedingungen kaum oder keine Mischfraktion; der Übergang war im Modell zu abrupt.
+- Bei Methanol/Ethanol entstand unter mittleren Bedingungen eine zu große Mischfraktion.
+- Beim Fraktionswechsel schwenkte zwar das Ablaufrohr, die Tropfen fielen aber weiterhin in das erste Auffanggefäß.
+- Zwischen Kolonne und Kühler erschien während der Tropfanimation ein störendes dunkles trapezförmiges Element.
+- Die eingestellte Anfangszusammensetzung wurde in der Zusammensetzungsanzeige nicht erwartungskonform sichtbar, da die Simulation intern mit Stoffmengenanteilen rechnet, die Anzeige aber didaktisch als Volumenanteil verstanden wurde.
+
+### Änderungen in Version 0.8.2
+- Versionskennung im Header auf 0.8.2 geändert.
+- Legende F1/F2/F3 aus der Apparaturfläche herausgenommen und als eigene Zeile unter die gesamte Grafik gesetzt.
+- Verbindungsschliff zwischen Kolonne und Kühler grafisch entschärft: keine dunkle Füllfläche mehr, nur noch helle Konturzeichnung.
+- Tropfenposition korrigiert: Die Tropfenform wird nun beim Fraktionswechsel mit absoluten SVG-Koordinaten neu gesetzt, damit die CSS-Fallanimation die seitliche Position nicht überschreibt.
+- Zusammensetzungsanzeige im Kolben auf Volumenanteile umgestellt, damit sie mit dem Startregler übereinstimmt. Die thermodynamische Rechnung verwendet weiterhin Stoffmengenanteile.
+- Dampfzusammensetzung am Kopf mit einem einfachen Kolonnen-/Kopf-Holdup geglättet, um unrealistisch abrupte Sprünge zu vermeiden.
+- Automatische Fraktionsgrenzen erneut gemischabhängig kalibriert:
+  - Aceton/Toluol: Übergangsbereich verbreitert, damit auch bei gut trennbaren Gemischen eine kleine Mischfraktion sichtbar werden kann.
+  - Cyclohexan/Toluol: weitgehend beibehalten, da die Testwerte plausibel wirkten.
+  - Methanol/Ethanol: Übergangsbereich wieder verkleinert, da Version 0.8.1 eine zu große Mischfraktion erzeugte.
+  - Ethylacetat/1-Butanol: eigene Fraktionsgrenzen ergänzt.
+
+### Didaktische Einordnung
+- Die App bleibt bewusst ein didaktisch vereinfachtes Modell. Die aktuellen Anpassungen dienen nicht der exakten Prozesssimulation, sondern einer plausibleren und besser interpretierbaren Darstellung des Zusammenhangs von Heizleistung, Kolonnenleistung, Dampfzusammensetzung und Fraktionsbildung.
