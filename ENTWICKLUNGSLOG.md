@@ -285,3 +285,43 @@ Kleine Korrekturversion auf Basis der Rückmeldung zu einfacher Destillation und
 ### Weiterhin offen
 - Feinkalibrierung der absoluten Fraktionsvolumina anhand mehrerer Testläufe.
 - Spätere virtuelle Messwerte der Fraktionen.
+
+## Phase 10 – Version 0.9.0
+
+Erster Ausbau vom Simulator zum virtuellen Labor.
+
+### Neue Funktionen
+- Virtuelle Probenentnahme je Fraktion:
+  - Fraktion 1
+  - Mischfraktion
+  - Fraktion 2
+- Messwerte pro entnommener Probe:
+  - modellierter Siedebereich
+  - Dichte
+  - Brechungsindex nD
+- Die Messwerte werden aus der berechneten Zusammensetzung der Fraktion abgeleitet.
+- Messwerte sind ausdrücklich Modellwerte, keine experimentelle Stoffdatenbank.
+
+### Protokollvorbereitung
+- Exportfähiges Protokoll als Textfeld ergänzt.
+- Enthalten sind:
+  - Version
+  - Gemisch
+  - Startvolumen und Startzusammensetzung
+  - Heizleistung, Kolonnenleistung, Zeitmaßstab
+  - Fraktionsvolumina und Reinheiten
+  - Messwerte der entnommenen Proben
+  - kompakter Temperaturverlauf
+- Button zum Aktualisieren des Protokolls.
+- Button zum Kopieren in die Zwischenablage.
+- Struktur ist vorbereitet für späteren CSV-Export beziehungsweise Download.
+
+### Modellannahmen
+- Dichte: volumenadditive Näherung über die Fraktionszusammensetzung.
+- Brechungsindex: einfache Volumenanteil-Mischungsregel.
+- Siedebereich: aus der modellierten Zusammensetzung und einer bewusst vereinfachten Breite abhängig von der Reinheit.
+
+### Noch offen
+- CSV-Download als Datei.
+- Vollständiger Temperaturverlauf statt kompakter Protokolltabelle.
+- Feinkalibrierung der Fraktionsvolumina und Messwertdarstellung.
