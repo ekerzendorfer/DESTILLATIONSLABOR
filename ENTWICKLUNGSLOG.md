@@ -74,3 +74,42 @@
 - Erwartung: deutlich größere Mischfraktion als in Version 0.8, aber weiterhin sichtbarer Einfluss von Heizleistung und Säulenleistung.
 - Prüfen, ob der automatische Fraktionswechsel didaktisch plausibel wirkt oder ob die Schwellenwerte je Gemisch weiter angepasst werden sollen.
 - Prüfen, ob die neue Anzeige des Gesamtverlaufs im Temperaturdiagramm für Unterricht/Erklärung ausreichend gut lesbar ist.
+
+# Ergänzung für ENTWICKLUNGSLOG.md – Version 0.8.1
+
+## Phase 4 – Version 0.8.1: Verfeinerung nach erstem Praxistest
+
+Ausgangspunkt war ein erster erfolgreicher Browser- und GitHub-Pages-Test der Version 0.8. Die Simulation lief stabil, zeigte aber bei sehr guten Trennbedingungen teilweise eine zu kleine Mischfraktion. Außerdem wurden mehrere grafische und didaktische Verbesserungen gewünscht.
+
+### Änderungen an Bedienung und Zeitmaßstab
+- Zeitmaßstab auf **5× / 10× / 20×** reduziert.
+- Standardwert auf **10×** gesetzt, weil die Destillation damit auch bei niedriger Heizleistung noch flott, aber besser beobachtbar läuft.
+
+### Änderungen am automatischen Fraktionswechsel
+- Die Automatik verwendet weiterhin die berechnete Dampfzusammensetzung am Kolonnenkopf.
+- Die Grenzwerte wurden gegenüber 0.8 verschärft, damit die Mischfraktion sichtbarer wird.
+- Für Methanol/Ethanol gelten strengere Grenzen als für leichter trennbare Gemische.
+- Eine kleine Hysterese verhindert nervöses Umschalten bei Grenzwerten.
+- Ziel: Der Unterschied zwischen kurzer/guter Kolonne und niedriger/mittlerer Heizleistung soll didaktisch klarer herausarbeitbar sein.
+
+### Änderungen an Anzeigen und Diagramm
+- Zusammensetzungen von Kolbeninhalt und Kopfdampf werden zusätzlich zu den Prozentzahlen als Farbbalken dargestellt.
+- Anzeige der aktuell aktiven Sammlung ergänzt.
+- Temperaturdiagramm erhält zwei Modi:
+  - **Live-Ansicht** für die laufende Simulation
+  - **Gesamtverlauf** zur Betrachtung des ganzen Temperaturprofils
+
+### Grafische Änderungen an der Apparatur
+- Kühlwasser als Gegenstrom deutlicher angedeutet: Einlass unten, Auslass oben.
+- Verbindungsschliff zwischen Kolonne/Kopf und Kühler ergänzt.
+- Heizhaube zeigt nun eine glühende Heizspirale.
+- Fraktionswechsler/Ablaufarm zeigt auf das jeweils aktive Auffanggefäß.
+- Tropfen fallen optisch in das aktive Auffanggefäß.
+- Auffanggefäße haben angedeutete Skalierungen.
+
+### Offene Punkte für spätere Versionen
+- Fraktionsauswertung am Ende der Simulation.
+- CSV-Export der Temperatur- und Volumendaten.
+- Messfunktionen für Siedebereich, Dichte und Brechungsindex der Fraktionen.
+- Weitere Verfeinerung der Kolonnenvisualisierung.
+- Eventuell Umschaltung zwischen didaktischem und stärker realitätsnahem Modell.
