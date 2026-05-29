@@ -124,13 +124,28 @@
     .openVessel{fill:none;stroke:#93c5fd;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
     .jointHatch{stroke:#dbeafe;stroke-width:1.8;opacity:.75}
 
+  
+    .labPanel{margin-top:14px;padding:14px 16px;border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.72);border-radius:16px}
+    .labPanel h3{margin:0 0 8px;font-size:1.02rem;color:#e0f2fe}
+    .sampleGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+    .sampleCard{border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.58);border-radius:14px;padding:10px}
+    .sampleCard .sampleTitle{font-weight:850;color:#e5f3ff;margin-bottom:6px}
+    .sampleCard button{margin-top:8px;width:100%}
+    .measureTable{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:8px}
+    .measureTable th,.measureTable td{padding:6px;border-bottom:1px solid rgba(148,163,184,.18);text-align:left;vertical-align:top}
+    .measureTable th{color:#dbeafe}.measureTable td{color:#f8fafc}
+    .protocolBox{margin-top:10px;padding:10px;border-radius:12px;background:rgba(2,6,23,.5);font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;font-size:.82rem;white-space:pre-wrap;max-height:260px;overflow:auto;color:#dbeafe}
+    .buttonRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .smallNote{font-size:.86rem;color:var(--muted);line-height:1.35;margin-top:8px}
+    @media(max-width:850px){.sampleGrid{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
 <header>
   <div>
     <h1 data-i18n="appTitle">Virtuelle fraktionierende Destillation</h1>
-    <div class="sub" data-i18n="subtitle">Version 0.8.6 – korrigierter Teststand mit plausiblerer Fraktionierung</div>
+    <div class="sub" data-i18n="subtitle">Version 0.9.0 – korrigierter Teststand mit plausiblerer Fraktionierung</div>
   </div>
   <div class="lang">
     <span class="small" data-i18n="language">Sprache</span>
@@ -198,7 +213,7 @@
 
       <hr style="border-color:rgba(148,163,184,.16);margin:16px 0">
       <div class="note" data-i18n="modelNote">
-        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.6 bewusst nicht berücksichtigt.
+        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.0 bewusst nicht berücksichtigt.
       </div>
     </div>
   </section>
@@ -331,6 +346,49 @@
         <h3 data-i18n="endReportTitle">Endauswertung</h3>
         <div id="endReportContent"></div>
       </div>
+      <div class="labPanel" id="samplingPanel">
+        <h3 data-i18n="samplingTitle">Virtuelle Probenentnahme und Messung</h3>
+        <div class="sampleGrid">
+          <div class="sampleCard">
+            <div class="sampleTitle" data-i18n="fraction1">Fraktion 1</div>
+            <div id="sampleF1Info">–</div>
+            <button id="sampleF1Btn" type="button" data-i18n="takeSample">Probe entnehmen</button>
+          </div>
+          <div class="sampleCard">
+            <div class="sampleTitle" data-i18n="fraction2">Mischfraktion</div>
+            <div id="sampleF2Info">–</div>
+            <button id="sampleF2Btn" type="button" data-i18n="takeSample">Probe entnehmen</button>
+          </div>
+          <div class="sampleCard">
+            <div class="sampleTitle" data-i18n="fraction3">Fraktion 2</div>
+            <div id="sampleF3Info">–</div>
+            <button id="sampleF3Btn" type="button" data-i18n="takeSample">Probe entnehmen</button>
+          </div>
+        </div>
+        <table class="measureTable">
+          <thead>
+            <tr>
+              <th>Fraktion</th>
+              <th data-i18n="boilingRange">Siedebereich</th>
+              <th data-i18n="density">Dichte</th>
+              <th data-i18n="refractiveIndex">Brechungsindex</th>
+            </tr>
+          </thead>
+          <tbody id="measurementBody">
+            <tr><td colspan="4">Noch keine Probe entnommen.</td></tr>
+          </tbody>
+        </table>
+        <div class="smallNote">Die Messwerte sind modellierte Näherungswerte aus der berechneten Zusammensetzung der Fraktion. Sie dienen der Auswertung, nicht als reale Stoffdatenbank.</div>
+      </div>
+      <div class="labPanel" id="protocolPanel">
+        <h3 data-i18n="protocolTitle">Exportfähiges Protokoll</h3>
+        <div class="buttonRow">
+          <button id="updateProtocolBtn" type="button" data-i18n="updateProtocol">Protokoll aktualisieren</button>
+          <button id="copyProtocolBtn" type="button" data-i18n="copyProtocol">Protokoll kopieren</button>
+        </div>
+        <div id="protocolBox" class="protocolBox">Noch kein Protokoll erzeugt.</div>
+        <div class="smallNote">Das Protokoll enthält Einstellungen, Fraktionen, Messwerte und eine kompakte Temperaturverlaufs-Tabelle. CSV/Download kann darauf später aufbauen.</div>
+      </div>
       <div class="legend" id="apparatusLegend">F1 = niedrig siedende Fraktion · F2 = Mischfraktion · F3 = höher siedende Fraktion</div>
     </div>
   </section>
@@ -417,19 +475,19 @@ const DATA = {
 
 const I18N = {
   de:{
-    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.8.6 – korrigierter Teststand mit plausiblerer Fraktionierung",
+    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.9.0 – korrigierter Teststand mit plausiblerer Fraktionierung",
     language:"Sprache", controls:"Einstellungen", mixture:"Gemisch", totalVolume:"Gesamtvolumen", startComposition:"Startanteil Komponente A",
     columnPower:"Säulenleistung", simpleDistillation:"einfache Destillation", shortColumn:"kurze Kolonne", mediumColumn:"mittlere Kolonne", goodColumn:"gute Kolonne",
     heatPower:"Heizleistung", low:"niedrig", medium:"mittel", high:"hoch", timeScale:"Zeitmaßstab", fractionMode:"Fraktionswechsel",
     autoFraction:"automatisch", manualFraction:"manuell", start:"Start", pause:"Pause", reset:"Zurücksetzen", switchFraction:"Fraktion wechseln",
-    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.6 bewusst nicht berücksichtigt.",
+    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.0 bewusst nicht berücksichtigt.",
     apparatusTitle:"Apparatur", dashboard:"Messwerte", potTemperature:"Sumpftemperatur", headTemperature:"Kopftemperatur", potVolume:"Kolbeninhalt",
     totalDistillate:"Destillat gesamt", fraction1:"Fraktion 1", fraction2:"Mischfraktion", fraction3:"Fraktion 2", liquidComposition:"Zusammensetzung im Kolben",
     vapourComposition:"Dampf am Kopf", simTime:"Simulationszeit", status:"Status", chartTitle:"Temperaturverlauf", activeCollection:"Aktive Sammlung", liveView:"Live-Ansicht", fullView:"Gesamtverlauf", ready:"bereit", heating:"heizt auf",
     distilling:"destilliert", finished:"beendet", component:"Komponente", hazards:"Gefahrenkennzeichnung", volatile:"flüchtigere Komponente"
   },
   en:{
-    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.8.6 – corrected test build with more plausible fractionation",
+    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.9.0 – corrected test build with more plausible fractionation",
     language:"Language", controls:"Settings", mixture:"Mixture", totalVolume:"Total volume", startComposition:"Initial share of component A",
     columnPower:"Column performance", simpleDistillation:"simple distillation", shortColumn:"short column", mediumColumn:"medium column", goodColumn:"good column",
     heatPower:"Heating power", low:"low", medium:"medium", high:"high", timeScale:"Time scale", fractionMode:"Fraction switching",
@@ -552,7 +610,7 @@ function initState(){
     potVol:[volA, volB],
     startVol:[volA, volB],
     fractions:[[0,0],[0,0],[0,0]],
-    history:[], finished:false,
+    history:[], samples:[null,null,null], finished:false,
     lastYA:null, autoCandidate:0, autoHold:0, hasStartedBoiling:false
   };
   clearChart();
@@ -591,7 +649,7 @@ function simStep(){
     state.tempPot = bp;
     const stages = Number($("columnSelect").value);
     const yRaw = adjustedHeadComposition(enrichThroughColumn(xA,bp,A,B,stages,heat.eff), xA, stages, heat);
-    // V0.8.6: Beim ersten Sieden Kopfzusammensetzung direkt setzen.
+    // V0.9.0: Beim ersten Sieden Kopfzusammensetzung direkt setzen.
     // Dadurch fällt zu Beginn kein künstlicher Anteil in die Mischfraktion.
     if(!state.hasStartedBoiling || state.lastYA===null){
       state.lastYA = yRaw;
@@ -671,7 +729,7 @@ function targetFractionFromComposition(yA){
 }
 function chooseFraction(yA){
   if($("fractionModeSelect").value==="manual") return state.manualFraction;
-  // Automatik V0.8.6: gemischabhängige Grenzen plus Hysterese.
+  // Automatik V0.9.0: gemischabhängige Grenzen plus Hysterese.
   // Gemischabhängige Grenzen und Kopf-Holdup verhindern zu abrupte oder zu breite Übergangsbereiche.
   const cut=dynamicCutLimits();
   const hold=cut.hold || 3;
@@ -818,6 +876,130 @@ function updatePurityDisplay(){
   updateBalanceDisplay();
 }
 
+
+function fractionLabel(i){ return [t("fraction1"),t("fraction2"),t("fraction3")][i] || `F${i+1}`; }
+
+function mixDensity(c){
+  if(c.vol<=0) return NaN;
+  const m=currentMixture(), A=DATA.solvents[m.a], B=DATA.solvents[m.b];
+  return (c.a*A.density + c.b*B.density) / c.vol;
+}
+function mixRefractiveIndex(c){
+  if(c.vol<=0) return NaN;
+  const m=currentMixture(), A=DATA.solvents[m.a], B=DATA.solvents[m.b];
+  return c.fracA*(A.nD||1.35) + (1-c.fracA)*(B.nD||1.40);
+}
+function boilingPointForComposition(fracA){
+  const m=currentMixture(), A=DATA.solvents[m.a], B=DATA.solvents[m.b];
+  const nA=fracA/(moleVolume(A)||1), nB=(1-fracA)/(moleVolume(B)||1);
+  const xA=(nA+nB)>0 ? nA/(nA+nB) : fracA;
+  return bubblePoint(Math.max(0,Math.min(1,xA)),A,B);
+}
+function boilingRangeForFraction(c){
+  if(c.vol<=0) return null;
+  const center=boilingPointForComposition(c.fracA);
+  const impurity=1-c.purity;
+  const width=Math.max(0.8, 1.5 + impurity*18);
+  return {low:center-width/2, high:center+width/2, center, width};
+}
+function measureFraction(i){
+  if(!state) return;
+  const c=fractionComposition(i);
+  if(c.vol<=0.05) return;
+  if(!state.samples) state.samples=[null,null,null];
+  const br=boilingRangeForFraction(c);
+  state.samples[i]={
+    fraction:i+1,label:fractionLabel(i),timeMin:state.timeMin,volume:c.vol,
+    fracA:c.fracA,fracB:1-c.fracA,compA:c.a,compB:c.b,purity:c.purity,
+    density:mixDensity(c),refractiveIndex:mixRefractiveIndex(c),
+    boilingLow:br.low,boilingHigh:br.high
+  };
+  updateMeasurementDisplay();
+  updateProtocol();
+}
+function updateSampleButtons(){
+  if(!state) return;
+  for(let i=0;i<3;i++){
+    const c=fractionComposition(i), info=$(`sampleF${i+1}Info`), btn=$(`sampleF${i+1}Btn`);
+    if(info){
+      info.textContent = c.vol>0.05
+        ? `${fmt(c.vol,1)} mL · ${fmt(c.purity*100,1)} % ${solventName(c.main)}`
+        : (lang==="de" ? "noch keine ausreichende Menge" : "not enough collected yet");
+    }
+    if(btn) btn.disabled = c.vol<=0.05;
+  }
+}
+function updateMeasurementDisplay(){
+  const body=$("measurementBody");
+  if(!body || !state) return;
+  const samples=state.samples || [null,null,null];
+  const rows=samples.filter(Boolean).map(s=>{
+    const m=currentMixture();
+    const comp=`${solventName(m.a)} ${fmt(s.fracA*100,1)} % / ${solventName(m.b)} ${fmt(s.fracB*100,1)} %`;
+    return `<tr><td>${s.label}<br><span class="infoHint">${comp}</span></td><td>${fmt(s.boilingLow,1)}–${fmt(s.boilingHigh,1)} °C</td><td>${fmt(s.density,3)} g/mL</td><td>n<sub>D</sub> ${fmt(s.refractiveIndex,4)}</td></tr>`;
+  }).join("");
+  body.innerHTML = rows || `<tr><td colspan="4">${lang==="de"?"Noch keine Probe entnommen.":"No sample taken yet."}</td></tr>`;
+}
+function compactHistoryRows(maxRows=18){
+  if(!state || !state.history) return [];
+  const h=state.history;
+  if(h.length<=maxRows) return h;
+  const rows=[];
+  for(let i=0;i<maxRows;i++){
+    const idx=Math.round(i*(h.length-1)/(maxRows-1));
+    rows.push(h[idx]);
+  }
+  return rows;
+}
+function protocolText(){
+  if(!state) return lang==="de" ? "Noch kein Versuch gestartet." : "No run started yet.";
+  const m=currentMixture(), A=solventName(m.a), B=solventName(m.b), q=separationQuality();
+  const startTotal=((state.startVol?.[0]||0)+(state.startVol?.[1]||0)) || 1;
+  const lines=[];
+  lines.push(lang==="de" ? "VIRTUELLES DESTILLATIONSPROTOKOLL" : "VIRTUAL DISTILLATION REPORT");
+  lines.push("Version: 0.9.0");
+  lines.push(`Gemisch / mixture: ${A} / ${B}`);
+  lines.push(`${lang==="de"?"Gesamtvolumen":"Total volume"}: ${fmt(startTotal,1)} mL`);
+  lines.push(`${lang==="de"?"Startzusammensetzung":"Start composition"}: ${A} ${fmt((state.startVol?.[0]||0)/startTotal*100,1)} % / ${B} ${fmt((state.startVol?.[1]||0)/startTotal*100,1)} %`);
+  lines.push(`${lang==="de"?"Heizleistung":"Heating"}: ${$("heatSelect").value}; ${lang==="de"?"Kolonne":"Column"}: ${$("columnSelect").value}; ${lang==="de"?"Zeitmaßstab":"Time scale"}: ${$("speedSelect").value}x`);
+  lines.push(`${lang==="de"?"Trennqualität":"Separation quality"}: ${q.stars} ${q.label}`);
+  lines.push("");
+  lines.push(lang==="de" ? "FRAKTIONEN" : "FRACTIONS");
+  for(let i=0;i<3;i++){
+    const c=fractionComposition(i);
+    lines.push(`${fractionLabel(i)}: ${fmt(c.vol,1)} mL; ${A} ${fmt(c.fracA*100,1)} %, ${B} ${fmt((1-c.fracA)*100,1)} %; ${lang==="de"?"Reinheit":"purity"} ${fmt(c.purity*100,1)} %`);
+  }
+  lines.push("");
+  lines.push(lang==="de" ? "MESSWERTE DER PROBEN" : "SAMPLE MEASUREMENTS");
+  const samples=(state.samples||[]).filter(Boolean);
+  if(samples.length===0) lines.push(lang==="de" ? "Keine Proben entnommen." : "No samples taken.");
+  samples.forEach(s=>{
+    lines.push(`${s.label}: ${lang==="de"?"Siedebereich":"boiling range"} ${fmt(s.boilingLow,1)}–${fmt(s.boilingHigh,1)} °C; ${lang==="de"?"Dichte":"density"} ${fmt(s.density,3)} g/mL; nD ${fmt(s.refractiveIndex,4)}`);
+  });
+  lines.push("");
+  lines.push(lang==="de" ? "TEMPERATURVERLAUF (kompakt)" : "TEMPERATURE TRACE (compact)");
+  lines.push("time_min;pot_temp_C;head_temp_C;pot_volume_mL;distillate_mL;fraction");
+  compactHistoryRows().forEach(r=>lines.push(`${fmt(r.timeMin,2)};${fmt(r.potTemp,2)};${fmt(r.headTemp,2)};${fmt(r.potVol,2)};${fmt(r.dist,2)};${r.fraction}`));
+  lines.push("");
+  lines.push(lang==="de" ? "Hinweis: Messwerte und Fraktionszusammensetzungen sind modellierte Näherungen." : "Note: measurements and fraction compositions are modeled approximations.");
+  return lines.join("\\n");
+}
+function updateProtocol(){
+  const box=$("protocolBox");
+  if(box) box.textContent=protocolText();
+}
+async function copyProtocol(){
+  const text=protocolText();
+  try{
+    await navigator.clipboard.writeText(text);
+    const box=$("protocolBox");
+    if(box) box.textContent=text+"\\n\\n"+(lang==="de"?"[Protokoll wurde in die Zwischenablage kopiert.]":"[Protocol copied to clipboard.]");
+  }catch(e){
+    const box=$("protocolBox");
+    if(box) box.textContent=text+"\\n\\n"+(lang==="de"?"[Kopieren nicht erlaubt – Text bitte manuell markieren.]":"[Copying not allowed – please select manually.]");
+  }
+}
+
 function componentBalance(){
   if(!state) return null;
   const start=state.startVol || [0,0];
@@ -910,6 +1092,8 @@ function render(){
   if($("infoText")) $("infoText").textContent = processInfoText();
   updatePurityDisplay();
   updateEndReport();
+  updateSampleButtons();
+  updateMeasurementDisplay();
   $("simTime").textContent = `${Math.floor(state.timeMin)}:${String(Math.floor((state.timeMin%1)*60)).padStart(2,"0")}`;
 
   const initialV=Number($("volumeRange").value);
@@ -993,6 +1177,12 @@ function bind(){
   $("fractionModeSelect").addEventListener("change",()=>render());
   $("chartLiveBtn").addEventListener("click",()=>setChartMode("live"));
   $("chartAllBtn").addEventListener("click",()=>setChartMode("all"));
+  ["sampleF1Btn","sampleF2Btn","sampleF3Btn"].forEach((id,idx)=>{
+    const btn=$(id);
+    if(btn) btn.addEventListener("click",()=>measureFraction(idx));
+  });
+  if($("updateProtocolBtn")) $("updateProtocolBtn").addEventListener("click",updateProtocol);
+  if($("copyProtocolBtn")) $("copyProtocolBtn").addEventListener("click",copyProtocol);
 }
 
 populateMixtures();
