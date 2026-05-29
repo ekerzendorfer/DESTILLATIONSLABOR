@@ -74,6 +74,24 @@
     .tablelike{font-size:.84rem;border:1px solid rgba(148,163,184,.2);border-radius:12px;overflow:hidden;margin-top:10px}
     .tablelike div{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 9px;border-bottom:1px solid rgba(148,163,184,.12)}
     .tablelike div:last-child{border-bottom:0}
+
+    .compCard{background:#0b1220;border:1px solid rgba(148,163,184,.2);border-radius:12px;padding:9px;margin-top:9px}
+    .compTop{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:.84rem;color:var(--muted)}
+    .compTop strong{color:#f8fafc;font-variant-numeric:tabular-nums;text-align:right}
+    .compbar{height:13px;border-radius:999px;overflow:hidden;background:rgba(251,191,36,.95);border:1px solid rgba(255,255,255,.16);margin-top:6px;display:flex}
+    .compbar .a{height:100%;background:var(--liquidA);transition:width .25s}
+    .compbar .b{height:100%;background:var(--liquidB);transition:width .25s;flex:1}
+    .activeCollection{margin-top:10px;background:rgba(14,165,233,.10);border:1px solid rgba(56,189,248,.35);border-radius:12px;padding:9px;font-size:.88rem;display:flex;justify-content:space-between;gap:10px}
+    .activeCollection strong{color:#bae6fd}
+    .chartControls{display:flex;gap:8px;flex-wrap:wrap;padding:0 10px 10px}
+    .chartControls button.active{border-color:#38bdf8;box-shadow:0 0 0 2px rgba(56,189,248,.15) inset;background:#0f172a}
+    .coil{fill:none;stroke:#f59e0b;stroke-width:6;stroke-linecap:round;opacity:.45;filter:drop-shadow(0 0 8px rgba(245,158,11,.45));transition:opacity .2s, stroke-width .2s}
+    .coil.hotLow{opacity:.55;stroke-width:5}.coil.hotMedium{opacity:.78;stroke-width:6}.coil.hotHigh{opacity:1;stroke-width:7;filter:drop-shadow(0 0 18px rgba(249,115,22,.9))}
+    .scaleLine{stroke:#cbd5e1;stroke-width:1.4;opacity:.55}
+    .port{fill:#0ea5e9;stroke:#7dd3fc;stroke-width:2;opacity:.9}
+    .portLabel{fill:#bae6fd;font-size:12px}
+    .groundJoint{fill:rgba(147,197,253,.10);stroke:#dbeafe;stroke-width:2;opacity:.9}
+    .selectorArm{fill:none;stroke:#bae6fd;stroke-width:6;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(56,189,248,.45));transition:d .25s}
     @media(max-width:1250px){.wrap{grid-template-columns:360px 1fr}.right{grid-column:1/-1}}
     @media(max-width:850px){.wrap{grid-template-columns:1fr}.apparatus{height:540px}}
   </style>
@@ -82,7 +100,7 @@
 <header>
   <div>
     <h1 data-i18n="appTitle">Virtuelle fraktionierende Destillation</h1>
-    <div class="sub" data-i18n="subtitle">Version 0.8 – erster lauffähiger Prototyp für ideale binäre Gemische</div>
+    <div class="sub" data-i18n="subtitle">Version 0.8.1 – verfeinerter Prototyp mit besserer Fraktionslogik</div>
   </div>
   <div class="lang">
     <span class="small" data-i18n="language">Sprache</span>
@@ -131,9 +149,9 @@
 
       <label data-i18n="timeScale">Zeitmaßstab</label>
       <select id="speedSelect">
-        <option value="10">10×</option>
-        <option value="20" selected>20×</option>
-        <option value="40">40×</option>
+        <option value="5">5×</option>
+        <option value="10" selected>10×</option>
+        <option value="20">20×</option>
       </select>
 
       <label data-i18n="fractionMode">Fraktionswechsel</label>
@@ -150,7 +168,7 @@
 
       <hr style="border-color:rgba(148,163,184,.16);margin:16px 0">
       <div class="note" data-i18n="modelNote">
-        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8 bewusst nicht berücksichtigt.
+        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.1 bewusst nicht berücksichtigt.
       </div>
     </div>
   </section>
@@ -188,7 +206,8 @@
 
         <!-- heater -->
         <path id="heater" class="heater" d="M145 500 L315 500 L285 570 L175 570 Z"/>
-        <path id="heatGlow" d="M178 548 C195 510,215 542,230 505 C244 540,267 512,283 548 Z" fill="url(#flame)" opacity=".2"/>
+        <path id="heatGlow" d="M178 548 C195 510,215 542,230 505 C244 540,267 512,283 548 Z" fill="url(#flame)" opacity=".12"/>
+        <path id="heaterCoil" class="coil" d="M172 538 C188 514,205 560,222 536 S256 514,273 538 S298 560,309 530"/>
 
         <!-- column, thermometer, condenser -->
         <path class="thinGlass" d="M230 317 L230 220"/>
@@ -201,16 +220,26 @@
           <line x1="210" y1="302" x2="250" y2="290" stroke="#93c5fd" stroke-width="2"/>
         </g>
         <path class="thinGlass" d="M230 166 L230 125 L315 125"/>
+        <g id="joint" class="groundJoint">
+          <path d="M286 116 L317 129 L312 142 L281 129 Z"/>
+          <line x1="292" y1="119" x2="287" y2="132"/>
+          <line x1="303" y1="123" x2="298" y2="137"/>
+        </g>
         <line x1="255" y1="110" x2="255" y2="165" stroke="#fca5a5" stroke-width="5" stroke-linecap="round"/>
         <circle cx="255" cy="166" r="9" fill="#fca5a5"/>
 
         <path class="thinGlass" d="M315 125 L525 210"/>
         <path class="glass" d="M298 108 L542 206 L532 231 L288 133 Z"/>
-        <path class="coolwater" d="M510 225 C470 213,420 192,350 164"/>
-        <path class="coolwater" d="M333 105 C385 126,448 151,526 184"/>
+        <rect class="port" x="515" y="224" width="22" height="13" rx="3"/>
+        <text class="portLabel" x="541" y="236">Einlass</text>
+        <rect class="port" x="306" y="95" width="22" height="13" rx="3"/>
+        <text class="portLabel" x="246" y="104">Auslass</text>
+        <path class="coolwater" d="M526 230 C480 215,420 190,327 102"/>
+        <path class="coolwater" d="M516 222 C468 206,410 182,340 154"/>
 
         <path class="thinGlass" d="M525 210 C552 222,555 250,535 268 L510 292"/>
-        <path id="dropPath" class="droplet" d="M507 310 C493 331,523 331,509 310 Z"/>
+        <path id="selectorArm" class="selectorArm" d="M510 292 L477 430"/>
+        <path id="dropPath" class="droplet" d="M474 410 C460 431,490 431,476 410 Z"/>
 
         <!-- vapour path -->
         <path id="vapourPath" class="vapour" d="M230 320 L230 165 L315 125 L525 210"/>
@@ -219,6 +248,11 @@
         <rect class="glass" x="448" y="445" width="58" height="110" rx="11"/>
         <rect class="glass" x="535" y="445" width="58" height="110" rx="11"/>
         <rect class="glass" x="622" y="445" width="58" height="110" rx="11"/>
+        <g class="receiverScales">
+          <line class="scaleLine" x1="494" y1="530" x2="503" y2="530"/><line class="scaleLine" x1="494" y1="505" x2="503" y2="505"/><line class="scaleLine" x1="494" y1="480" x2="503" y2="480"/>
+          <line class="scaleLine" x1="581" y1="530" x2="590" y2="530"/><line class="scaleLine" x1="581" y1="505" x2="590" y2="505"/><line class="scaleLine" x1="581" y1="480" x2="590" y2="480"/>
+          <line class="scaleLine" x1="668" y1="530" x2="677" y2="530"/><line class="scaleLine" x1="668" y1="505" x2="677" y2="505"/><line class="scaleLine" x1="668" y1="480" x2="677" y2="480"/>
+        </g>
         <rect id="f1Liquid" class="liquid" clip-path="url(#f1Clip)" x="448" y="555" width="58" height="0"/>
         <rect id="f2Liquid" class="liquid" clip-path="url(#f2Clip)" x="535" y="555" width="58" height="0"/>
         <rect id="f3Liquid" class="liquid" clip-path="url(#f3Clip)" x="622" y="555" width="58" height="0"/>
@@ -258,9 +292,18 @@
         <div id="fracBox2" class="frac"><div class="name" data-i18n="fraction3">Fraktion 2</div><div class="vol"><span id="f3Vol">0,0</span> mL</div></div>
       </div>
 
+      <div class="activeCollection"><span data-i18n="activeCollection">Aktive Sammlung</span><strong id="activeCollectionText">Fraktion 1</strong></div>
+
+      <div class="compCard">
+        <div class="compTop"><span data-i18n="liquidComposition">Zusammensetzung im Kolben</span><strong id="liquidComp">–</strong></div>
+        <div class="compbar"><span id="liquidBarA" class="a" style="width:50%"></span><span class="b"></span></div>
+      </div>
+      <div class="compCard">
+        <div class="compTop"><span data-i18n="vapourComposition">Dampf am Kopf</span><strong id="vapourComp">–</strong></div>
+        <div class="compbar"><span id="vapourBarA" class="a" style="width:50%"></span><span class="b"></span></div>
+      </div>
+
       <div class="tablelike">
-        <div><span data-i18n="liquidComposition">Zusammensetzung im Kolben</span><strong id="liquidComp">–</strong></div>
-        <div><span data-i18n="vapourComposition">Dampf am Kopf</span><strong id="vapourComp">–</strong></div>
         <div><span data-i18n="simTime">Simulationszeit</span><strong id="simTime">0:00</strong></div>
         <div><span data-i18n="status">Status</span><strong id="statusText">bereit</strong></div>
       </div>
@@ -269,6 +312,10 @@
     <h2 data-i18n="chartTitle">Temperaturverlauf</h2>
     <div class="chartbox">
       <canvas id="tempChart"></canvas>
+    </div>
+    <div class="chartControls">
+      <button id="chartLiveBtn" class="ghost active" data-i18n="liveView">Live-Ansicht</button>
+      <button id="chartAllBtn" class="ghost" data-i18n="fullView">Gesamtverlauf</button>
     </div>
   </section>
 </main>
@@ -290,36 +337,36 @@ const DATA = {
     ethylacetate: { de:"Ethylacetat", en:"Ethyl acetate", formula:"C₄H₈O₂", bp:77.1, density:0.902, mw:88.11, hazards:["GHS02","GHS07"], antoine:{A:7.10179,B:1244.951,C:217.881}}
   },
   mixtures: [
-    { id:"acetone_toluene", a:"acetone", b:"toluene", noteDe:"Großer Siedepunktunterschied – sehr gut für den Einstieg.", noteEn:"Large boiling point difference – very good starter example." },
-    { id:"cyclohexane_toluene", a:"cyclohexane", b:"toluene", noteDe:"Klassisches organisches Beispiel für fraktionierende Destillation.", noteEn:"Classic organic example for fractional distillation." },
-    { id:"methanol_ethanol", a:"methanol", b:"ethanol", noteDe:"Nahe Siedepunkte – Trennung deutlich schwieriger.", noteEn:"Close boiling points – separation is much harder." },
+    { id:"acetone_toluene", a:"acetone", b:"toluene", cut:{high:0.88,low:0.12,hold:3}, noteDe:"Großer Siedepunktunterschied – sehr gut für den Einstieg.", noteEn:"Large boiling point difference – very good starter example." },
+    { id:"cyclohexane_toluene", a:"cyclohexane", b:"toluene", cut:{high:0.88,low:0.12,hold:3}, noteDe:"Klassisches organisches Beispiel für fraktionierende Destillation.", noteEn:"Classic organic example for fractional distillation." },
+    { id:"methanol_ethanol", a:"methanol", b:"ethanol", cut:{high:0.93,low:0.07,hold:4}, noteDe:"Nahe Siedepunkte – Trennung deutlich schwieriger.", noteEn:"Close boiling points – separation is much harder." },
     { id:"ethylacetate_butanol1", a:"ethylacetate", b:"butanol1", noteDe:"Ester/Alkohol-Beispiel mit deutlichem Siedepunktunterschied.", noteEn:"Ester/alcohol example with a distinct boiling point difference." }
   ]
 };
 
 const I18N = {
   de:{
-    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.8 – erster lauffähiger Prototyp für ideale binäre Gemische",
+    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.8.1 – verfeinerter Prototyp mit besserer Fraktionslogik",
     language:"Sprache", controls:"Einstellungen", mixture:"Gemisch", totalVolume:"Gesamtvolumen", startComposition:"Startanteil Komponente A",
     columnPower:"Säulenleistung", simpleDistillation:"einfache Destillation", shortColumn:"kurze Kolonne", mediumColumn:"mittlere Kolonne", goodColumn:"gute Kolonne",
     heatPower:"Heizleistung", low:"niedrig", medium:"mittel", high:"hoch", timeScale:"Zeitmaßstab", fractionMode:"Fraktionswechsel",
     autoFraction:"automatisch", manualFraction:"manuell", start:"Start", pause:"Pause", reset:"Zurücksetzen", switchFraction:"Fraktion wechseln",
-    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8 bewusst nicht berücksichtigt.",
+    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.8.1 bewusst nicht berücksichtigt.",
     apparatusTitle:"Apparatur", dashboard:"Messwerte", potTemperature:"Sumpftemperatur", headTemperature:"Kopftemperatur", potVolume:"Kolbeninhalt",
     totalDistillate:"Destillat gesamt", fraction1:"Fraktion 1", fraction2:"Mischfraktion", fraction3:"Fraktion 2", liquidComposition:"Zusammensetzung im Kolben",
-    vapourComposition:"Dampf am Kopf", simTime:"Simulationszeit", status:"Status", chartTitle:"Temperaturverlauf", ready:"bereit", heating:"heizt auf",
+    vapourComposition:"Dampf am Kopf", simTime:"Simulationszeit", status:"Status", chartTitle:"Temperaturverlauf", activeCollection:"Aktive Sammlung", liveView:"Live-Ansicht", fullView:"Gesamtverlauf", ready:"bereit", heating:"heizt auf",
     distilling:"destilliert", finished:"beendet", component:"Komponente", hazards:"Gefahrenkennzeichnung", volatile:"flüchtigere Komponente"
   },
   en:{
-    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.8 – first working prototype for ideal binary mixtures",
+    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.8.1 – refined prototype with improved fraction logic",
     language:"Language", controls:"Settings", mixture:"Mixture", totalVolume:"Total volume", startComposition:"Initial share of component A",
     columnPower:"Column performance", simpleDistillation:"simple distillation", shortColumn:"short column", mediumColumn:"medium column", goodColumn:"good column",
     heatPower:"Heating power", low:"low", medium:"medium", high:"high", timeScale:"Time scale", fractionMode:"Fraction switching",
     autoFraction:"automatic", manualFraction:"manual", start:"Start", pause:"Pause", reset:"Reset", switchFraction:"Switch fraction",
-    modelNote:"Model note: This simulation uses a simplified model of ideal binary mixtures. Water impurities, activity coefficients, heat losses and real apparatus details are deliberately ignored in version 0.8.",
+    modelNote:"Model note: This simulation uses a simplified model of ideal binary mixtures. Water impurities, activity coefficients, heat losses and real apparatus details are deliberately ignored in version 0.8.1.",
     apparatusTitle:"Apparatus", dashboard:"Measurements", potTemperature:"Pot temperature", headTemperature:"Head temperature", potVolume:"Pot volume",
     totalDistillate:"Total distillate", fraction1:"Fraction 1", fraction2:"Mixed fraction", fraction3:"Fraction 2", liquidComposition:"Liquid in pot",
-    vapourComposition:"Vapour at head", simTime:"Simulation time", status:"Status", chartTitle:"Temperature profile", ready:"ready", heating:"heating",
+    vapourComposition:"Vapour at head", simTime:"Simulation time", status:"Status", chartTitle:"Temperature profile", activeCollection:"Active collection", liveView:"Live view", fullView:"Full profile", ready:"ready", heating:"heating",
     distilling:"distilling", finished:"finished", component:"Component", hazards:"Hazard labels", volatile:"more volatile component"
   }
 };
@@ -329,6 +376,7 @@ let running = false;
 let timer = null;
 let state = null;
 let chart = null;
+let chartMode = "live";
 
 const heatMap = {
   low:{rate:0.28, warm:0.030, eff:1.00, label:"low"},
@@ -433,7 +481,7 @@ function initState(){
     potVol:[volA, volB],
     fractions:[[0,0],[0,0],[0,0]],
     history:[], finished:false,
-    lastYA:0.5
+    lastYA:0.5, autoCandidate:0, autoHold:0
   };
   clearChart();
   logHistory();
@@ -495,12 +543,34 @@ function simStep(){
   render();
 }
 
+function targetFractionFromComposition(yA){
+  const m=currentMixture();
+  const cut=m.cut || {high:0.88, low:0.12, hold:3};
+  if(yA >= cut.high) return 0;
+  if(yA <= cut.low) return 2;
+  return 1;
+}
 function chooseFraction(yA){
   if($("fractionModeSelect").value==="manual") return state.manualFraction;
-  // Automatik nach Kopfdampf-Zusammensetzung: F1 reich an A, F2 Übergang, F3 reich an B
-  if(yA >= 0.78) return 0;
-  if(yA <= 0.28) return 2;
-  return 1;
+  // Automatik V0.8.1: gemischabhängige Grenzen plus Hysterese.
+  // Dadurch entsteht bei schwierigen Trennungen, besonders Methanol/Ethanol, eine sichtbarere Mischfraktion.
+  const m=currentMixture();
+  const hold=(m.cut && m.cut.hold) || 3;
+  const target=targetFractionFromComposition(yA);
+  if(target===state.activeFraction){
+    state.autoCandidate=target; state.autoHold=0;
+    return state.activeFraction;
+  }
+  if(target!==state.autoCandidate){
+    state.autoCandidate=target; state.autoHold=1;
+  }else{
+    state.autoHold++;
+  }
+  if(state.autoHold>=hold){
+    state.autoHold=0;
+    return target;
+  }
+  return state.activeFraction;
 }
 function switchFraction(){
   if(!state) initState();
@@ -518,7 +588,6 @@ function logHistory(){
     timeMin:state.timeMin, potTemp:state.tempPot, headTemp:state.tempHead,
     potVol:potTotalVol(), dist:totalDistillate(), xA, yA:state.lastYA, fraction:state.activeFraction+1
   });
-  if(state.history.length>700) state.history.shift();
   updateChart();
 }
 function clearChart(){
@@ -528,16 +597,17 @@ function clearChart(){
 }
 function updateChart(){
   if(!chart || !state) return;
-  const last=state.history[state.history.length-1];
-  if(!last) return;
-  chart.data.labels.push(fmt(last.timeMin,1));
-  chart.data.datasets[0].data.push(last.potTemp);
-  chart.data.datasets[1].data.push(last.headTemp);
-  if(chart.data.labels.length>120){
-    chart.data.labels.shift();
-    chart.data.datasets.forEach(d=>d.data.shift());
-  }
+  const source = chartMode==="all" ? state.history : state.history.slice(-120);
+  chart.data.labels = source.map(row=>fmt(row.timeMin,1));
+  chart.data.datasets[0].data = source.map(row=>row.potTemp);
+  chart.data.datasets[1].data = source.map(row=>row.headTemp);
   chart.update("none");
+}
+function setChartMode(mode){
+  chartMode=mode;
+  $("chartLiveBtn").classList.toggle("active", mode==="live");
+  $("chartAllBtn").classList.toggle("active", mode==="all");
+  updateChart();
 }
 
 function render(){
@@ -555,10 +625,17 @@ function render(){
   $("f3Vol").textContent=fmt(fractionTotal(2));
 
   document.querySelectorAll(".frac").forEach((el,i)=>el.classList.toggle("active",i===state.activeFraction));
+  const receiverX=[477,564,651][state.activeFraction];
+  $("selectorArm").setAttribute("d",`M510 292 L${receiverX} 430`);
+  $("dropPath").setAttribute("transform",`translate(${receiverX-477},0)`);
 
   const [nA,nB]=potMoles(), xA=(nA+nB)>0?nA/(nA+nB):0;
   $("liquidComp").textContent=`${solventName(m.a)} ${fmt(xA*100,0)} % / ${solventName(m.b)} ${fmt((1-xA)*100,0)} %`;
   $("vapourComp").textContent=`${solventName(m.a)} ${fmt(state.lastYA*100,0)} % / ${solventName(m.b)} ${fmt((1-state.lastYA)*100,0)} %`;
+  $("liquidBarA").style.width=`${Math.max(0,Math.min(100,xA*100))}%`;
+  $("vapourBarA").style.width=`${Math.max(0,Math.min(100,state.lastYA*100))}%`;
+  const fracNames=[t("fraction1"),t("fraction2"),t("fraction3")];
+  $("activeCollectionText").textContent=fracNames[state.activeFraction];
   $("simTime").textContent = `${Math.floor(state.timeMin)}:${String(Math.floor((state.timeMin%1)*60)).padStart(2,"0")}`;
 
   const initialV=Number($("volumeRange").value);
@@ -583,13 +660,17 @@ function render(){
   $("dropPath").classList.toggle("run",distilling);
   document.querySelectorAll(".bubble").forEach(b=>b.classList.toggle("run",distilling));
   const heater=$("heater");
+  const coil=$("heaterCoil");
   heater.classList.remove("hotLow","hotMedium","hotHigh");
+  coil.classList.remove("hotLow","hotMedium","hotHigh");
   if(running){
     const heat=$("heatSelect").value;
-    heater.classList.add(heat==="low"?"hotLow":heat==="medium"?"hotMedium":"hotHigh");
-    $("heatGlow").setAttribute("opacity", heat==="low"?.35:heat==="medium"?.55:.85);
+    const cls=heat==="low"?"hotLow":heat==="medium"?"hotMedium":"hotHigh";
+    heater.classList.add(cls);
+    coil.classList.add(cls);
+    $("heatGlow").setAttribute("opacity", heat==="low"?.25:heat==="medium"?.38:.55);
   } else {
-    $("heatGlow").setAttribute("opacity",".18");
+    $("heatGlow").setAttribute("opacity",".08");
   }
   $("startPauseBtn").textContent=running?t("pause"):t("start");
 }
@@ -636,6 +717,8 @@ function bind(){
   $("resetBtn").addEventListener("click",()=>{ running=false; stopTimer(); initState(); setStatus("ready"); });
   $("switchFractionBtn").addEventListener("click",switchFraction);
   $("fractionModeSelect").addEventListener("change",()=>render());
+  $("chartLiveBtn").addEventListener("click",()=>setChartMode("live"));
+  $("chartAllBtn").addEventListener("click",()=>setChartMode("all"));
 }
 
 populateMixtures();
