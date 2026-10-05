@@ -139,13 +139,23 @@
     .smallNote{font-size:.86rem;color:var(--muted);line-height:1.35;margin-top:8px}
     @media(max-width:850px){.sampleGrid{grid-template-columns:1fr}}
 
+
+    .bridgeContext{display:none;margin:14px auto 0;max-width:1548px;padding:12px 14px;border:1px solid rgba(56,189,248,.55);background:rgba(14,165,233,.10);border-radius:14px;gap:14px;align-items:center;justify-content:space-between}
+    .bridgeContext.active{display:flex}.bridgeContext.error{border-color:#f87171;background:rgba(248,113,113,.10)}
+    .bridgeCopy strong{display:block;color:#bae6fd;margin-bottom:3px}.bridgeMeta{font-size:.84rem;color:#cbd5e1}.bridgeRun{font:0.75rem ui-monospace,SFMono-Regular,Consolas,monospace;color:#94a3b8;margin-top:3px}
+    .bridgeActions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .bridgeActions button:disabled{opacity:.42;cursor:not-allowed;transform:none}
+    .qualityFeedback{margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid rgba(148,163,184,.28);background:rgba(2,6,23,.45);line-height:1.4}
+    .qualityFeedback.good{border-color:rgba(34,197,94,.45);background:rgba(20,83,45,.16)}
+    .qualityFeedback.warn{border-color:rgba(245,158,11,.5);background:rgba(120,53,15,.16)}
+    .attemptTable{width:100%;border-collapse:collapse;margin-top:10px;font-size:.86rem}.attemptTable th,.attemptTable td{padding:5px 7px;border-bottom:1px solid rgba(148,163,184,.16);text-align:left}
   </style>
 </head>
 <body>
 <header>
   <div>
     <h1 data-i18n="appTitle">Virtuelle fraktionierende Destillation</h1>
-    <div class="sub" data-i18n="subtitle">Version 0.9.0 – korrigierter Teststand mit plausiblerer Fraktionierung</div>
+    <div class="sub" data-i18n="subtitle">Version 0.9.1 – korrigierter Teststand mit plausiblerer Fraktionierung</div>
   </div>
   <div class="lang">
     <span class="small" data-i18n="language">Sprache</span>
@@ -155,6 +165,19 @@
     </select>
   </div>
 </header>
+
+<div id="bridgeContext" class="bridgeContext">
+  <div class="bridgeCopy">
+    <strong>Analyseauftrag aus dem Proben-Hub</strong>
+    <div id="bridgeSampleLabel" class="bridgeMeta">Unbekanntes organisches Filtrat</div>
+    <div id="bridgeRunLabel" class="bridgeRun"></div>
+    <div id="bridgeMessage" class="bridgeMeta"></div>
+  </div>
+  <div class="bridgeActions">
+    <button id="bridgeAcceptBtn" class="primary" type="button" disabled>Run an Hub übernehmen</button>
+    <button id="bridgeReturnBtn" class="ghost" type="button">Ohne Ergebnis zurück</button>
+  </div>
+</div>
 
 <main class="wrap">
   <section class="card">
@@ -213,7 +236,7 @@
 
       <hr style="border-color:rgba(148,163,184,.16);margin:16px 0">
       <div class="note" data-i18n="modelNote">
-        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.0 bewusst nicht berücksichtigt.
+        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.1 bewusst nicht berücksichtigt.
       </div>
     </div>
   </section>
@@ -475,19 +498,19 @@ const DATA = {
 
 const I18N = {
   de:{
-    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.9.0 – korrigierter Teststand mit plausiblerer Fraktionierung",
+    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.9.1 – korrigierter Teststand mit plausiblerer Fraktionierung",
     language:"Sprache", controls:"Einstellungen", mixture:"Gemisch", totalVolume:"Gesamtvolumen", startComposition:"Startanteil Komponente A",
     columnPower:"Säulenleistung", simpleDistillation:"einfache Destillation", shortColumn:"kurze Kolonne", mediumColumn:"mittlere Kolonne", goodColumn:"gute Kolonne",
     heatPower:"Heizleistung", low:"niedrig", medium:"mittel", high:"hoch", timeScale:"Zeitmaßstab", fractionMode:"Fraktionswechsel",
     autoFraction:"automatisch", manualFraction:"manuell", start:"Start", pause:"Pause", reset:"Zurücksetzen", switchFraction:"Fraktion wechseln",
-    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.0 bewusst nicht berücksichtigt.",
+    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.1 bewusst nicht berücksichtigt.",
     apparatusTitle:"Apparatur", dashboard:"Messwerte", potTemperature:"Sumpftemperatur", headTemperature:"Kopftemperatur", potVolume:"Kolbeninhalt",
     totalDistillate:"Destillat gesamt", fraction1:"Fraktion 1", fraction2:"Mischfraktion", fraction3:"Fraktion 2", liquidComposition:"Zusammensetzung im Kolben",
     vapourComposition:"Dampf am Kopf", simTime:"Simulationszeit", status:"Status", chartTitle:"Temperaturverlauf", activeCollection:"Aktive Sammlung", liveView:"Live-Ansicht", fullView:"Gesamtverlauf", ready:"bereit", heating:"heizt auf",
     distilling:"destilliert", finished:"beendet", component:"Komponente", hazards:"Gefahrenkennzeichnung", volatile:"flüchtigere Komponente"
   },
   en:{
-    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.9.0 – corrected test build with more plausible fractionation",
+    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.9.1 – corrected test build with more plausible fractionation",
     language:"Language", controls:"Settings", mixture:"Mixture", totalVolume:"Total volume", startComposition:"Initial share of component A",
     columnPower:"Column performance", simpleDistillation:"simple distillation", shortColumn:"short column", mediumColumn:"medium column", goodColumn:"good column",
     heatPower:"Heating power", low:"low", medium:"medium", high:"high", timeScale:"Time scale", fractionMode:"Fraction switching",
@@ -506,6 +529,196 @@ let timer = null;
 let state = null;
 let chart = null;
 let chartMode = "live";
+let bridgeMode = bridgeRequested();
+let bridgeRun = null;
+let bridgeInput = null;
+let attemptHistory = [];
+
+function bridgeRequested(){
+  const p=new URLSearchParams(window.location.search);
+  return p.get("bridge")==="1";
+}
+function loadAnalytikBridgeScript(){
+  if(window.AnalytikBridge) return Promise.resolve(window.AnalytikBridge);
+  return new Promise((resolve,reject)=>{
+    const s=document.createElement("script");
+    s.src=new URL("../CHEMIE_ANALYTIK_HUB/bridge/chemie-analytik-bridge.js",window.location.href).toString();
+    s.onload=()=>window.AnalytikBridge?resolve(window.AnalytikBridge):reject(new Error("Bridge-API fehlt."));
+    s.onerror=()=>reject(new Error("CHEMIE_ANALYTIK_BRIDGE konnte nicht geladen werden."));
+    document.head.appendChild(s);
+  });
+}
+function setBridgeBanner(message,isError=false){
+  const box=$("bridgeContext"); if(!box) return;
+  box.classList.add("active"); box.classList.toggle("error",!!isError);
+  $("bridgeMessage").textContent=message||"";
+}
+function qualitativePurity(purity,index){
+  if(index===1) return "Mischfraktion";
+  if(purity>=0.95) return "sehr hohe Reinheit";
+  if(purity>=0.88) return "hohe Reinheit";
+  if(purity>=0.78) return "brauchbare Reinheit";
+  if(purity>=0.68) return "mäßige Reinheit";
+  return "geringe Reinheit";
+}
+function qualityAdvice(){
+  if(!state) return [];
+  const q=separationQuality(),advice=[];
+  if(q.score>=5) return advice;
+  const stages=Number($("columnSelect").value),heat=$("heatSelect").value;
+  const f2=fractionComposition(1),total=totalDistillate()||1;
+  if(stages<=2) advice.push("Verwende eine leistungsfähigere Kolonne, damit sich die beiden flüchtigen Komponenten stärker anreichern.");
+  if(heat==="high") advice.push("Verringere die Heizleistung. Zu schnelles Destillieren verschlechtert in diesem Modell die Trennwirkung der Kolonne.");
+  else if(heat==="medium" && q.score<3) advice.push("Probiere eine niedrigere Heizleistung, um der Kolonne mehr Zeit für die Trennung zu geben.");
+  if(f2.vol/total>0.45) advice.push("Die Mischfraktion ist sehr groß. Beobachte den Übergangsbereich genauer und wähle bei manuellem Betrieb die Fraktionswechsel gezielter.");
+  if($("fractionModeSelect").value==="manual" && q.score<3) advice.push("Orientiere die manuellen Fraktionswechsel am Temperaturverlauf und am Übergang zwischen den Siedebereichen.");
+  if(!advice.length && q.score<3) advice.push("Kombiniere eine bessere Kolonne mit niedriger bis mittlerer Heizleistung und starte einen neuen Run.");
+  return advice;
+}
+function recordFinishedAttempt(){
+  if(!bridgeMode||!state||!state.finished||state.attemptRecorded) return;
+  const q=separationQuality();
+  attemptHistory.push({
+    run:attemptHistory.length+1,
+    score:q.score,
+    label:q.label,
+    column:Number($("columnSelect").value),
+    heat:$("heatSelect").value,
+    fractionMode:$("fractionModeSelect").value
+  });
+  state.attemptRecorded=true;
+}
+function updateBridgeAccept(){
+  if(!bridgeMode||!$("bridgeAcceptBtn")) return;
+  const min=Number(bridgeInput?.minimum_quality_score??3);
+  const ok=!!(state&&state.finished&&separationQuality().score>=min);
+  $("bridgeAcceptBtn").disabled=!ok;
+}
+function maskHubControls(){
+  if(!bridgeMode||!bridgeInput) return;
+  $("mixtureSelect").disabled=true;
+  $("volumeRange").disabled=true;
+  $("compositionRange").disabled=true;
+  const compRow=$("compositionRange").closest(".row");
+  if(compRow){
+    compRow.style.display="none";
+    const compLabel=compRow.previousElementSibling;
+    if(compLabel && compLabel.tagName==="LABEL") compLabel.style.display="none";
+  }
+  $("hazards").innerHTML="";
+  $("compALabel").textContent="interne Komponente";
+  $("resetBtn").textContent="Neuer Run";
+  if($("samplingPanel")) $("samplingPanel").style.display="none";
+  if($("protocolPanel")) $("protocolPanel").style.display="none";
+}
+async function initAnalytikBridge(){
+  const p=new URLSearchParams(window.location.search),runId=p.get("run");
+  try{
+    if(!runId) throw new Error("run-Parameter fehlt.");
+    await loadAnalytikBridgeScript();
+    const run=window.AnalytikBridge.getRun(runId);
+    if(!run) throw new Error("Analyse-Run nicht gefunden.");
+    if(run.app_id!=="DESTILLATION_LAB") throw new Error("Run ist nicht für das Destillationslabor bestimmt.");
+    if(!run.input||run.input.mode!=="fractional") throw new Error("Unbekannter Destillationsauftrag.");
+    if(!DATA.mixtures.some(m=>m.id===run.input.model_ref)) throw new Error("Destillationsmodell fehlt.");
+
+    bridgeRun=run; bridgeInput=run.input; attemptHistory=[];
+    $("mixtureSelect").value=bridgeInput.model_ref;
+    $("volumeRange").value=String(bridgeInput.initial_volume_ml??100);
+    $("compositionRange").value=String(bridgeInput.initial_component_a_percent??50);
+    maskHubControls();
+    updateMixtureInfo();
+    initState();
+    $("bridgeSampleLabel").textContent=(bridgeInput.display_label||"Unbekanntes organisches Filtrat")+" · "+run.sample_id;
+    $("bridgeRunLabel").textContent=run.run_id;
+    setBridgeBanner(bridgeInput.note||"Optimiere die Destillation und übernimm einen ausreichend guten Run.");
+    $("bridgeAcceptBtn").addEventListener("click",sendBridgeResult);
+    $("bridgeReturnBtn").addEventListener("click",()=>window.AnalytikBridge.returnToHub(bridgeRun));
+  }catch(err){
+    setBridgeBanner("Hub-Verbindung fehlgeschlagen: "+err.message,true);
+  }
+}
+function coreComponentIds(){
+  return bridgeInput?.component_ids || {a:"ETHYL_ACETATE",b:"BUTAN_1_OL"};
+}
+function producedFractionSample(i,role){
+  const ids=coreComponentIds(),c=fractionComposition(i);
+  const sampleId=bridgeInput.produced_sample_ids?.[role];
+  return {
+    sample_id:sampleId,
+    role,
+    volume_ml:Number(c.vol.toFixed(6)),
+    composition_internal:[
+      {substance_id:ids.a,fraction_model:Number(c.fracA.toFixed(8))},
+      {substance_id:ids.b,fraction_model:Number((1-c.fracA).toFixed(8))}
+    ],
+    quality:{
+      purity_internal:Number(c.purity.toFixed(8)),
+      label_de:qualitativePurity(c.purity,i)
+    },
+    metadata:{fraction_index:i+1}
+  };
+}
+function producedResidueSample(){
+  const ids=coreComponentIds(),total=potTotalVol(),fracA=total>0?state.potVol[0]/total:0;
+  const comp=[
+    {substance_id:ids.a,fraction_model_volatile:Number(fracA.toFixed(8))},
+    {substance_id:ids.b,fraction_model_volatile:Number((1-fracA).toFixed(8))}
+  ];
+  if(bridgeInput?.nonvolatile_component?.substance_id){
+    comp.push({substance_id:bridgeInput.nonvolatile_component.substance_id,role:bridgeInput.nonvolatile_component.role||"nonvolatile_analyte"});
+  }
+  return {
+    sample_id:bridgeInput.produced_sample_ids?.residue,
+    role:"residue",
+    volume_ml:Number(total.toFixed(6)),
+    composition_internal:comp,
+    quality:{label_de:"nichtflüchtiger Rückstand"},
+    metadata:{contains_nonvolatile_component:!!bridgeInput?.nonvolatile_component}
+  };
+}
+function sendBridgeResult(){
+  if(!bridgeMode||!bridgeRun||!state?.finished) return;
+  const q=separationQuality(),min=Number(bridgeInput?.minimum_quality_score??3);
+  if(q.score<min){setBridgeBanner("Dieser Run erreicht die Mindestqualität noch nicht. Nutze die Hinweise und starte einen neuen Run.");return;}
+  const result={
+    result_id:"RES_"+Date.now()+"_"+Math.random().toString(36).slice(2,7),
+    run_id:bridgeRun.run_id,
+    case_id:bridgeRun.case_id,
+    sample_id:bridgeRun.sample_id,
+    app_id:"DESTILLATION_LAB",
+    app_version:"0.9.1",
+    analysis_type:"FRACTIONAL_DISTILLATION",
+    status:"completed",
+    source:"app",
+    measurement:{
+      quality_score:q.score,
+      quality_label:q.label,
+      column_stages:Number($("columnSelect").value),
+      heating:$("heatSelect").value,
+      fraction_mode:$("fractionModeSelect").value,
+      simulation_time_min:Number(state.timeMin.toFixed(3)),
+      total_distillate_ml:Number(totalDistillate().toFixed(6)),
+      attempts:attemptHistory.length
+    },
+    evaluation:{
+      quality_score:q.score,
+      quality_label:q.label,
+      minimum_quality_score:min,
+      accepted:true,
+      advice:qualityAdvice()
+    },
+    produced_samples:[
+      producedFractionSample(0,"fraction_1"),
+      producedFractionSample(1,"fraction_2"),
+      producedFractionSample(2,"fraction_3"),
+      producedResidueSample()
+    ],
+    created_at:new Date().toISOString()
+  };
+  const completed=window.AnalytikBridge.completeRun(bridgeRun.run_id,result);
+  window.AnalytikBridge.returnToHub(completed);
+}
 
 const heatMap = {
   low:{rate:0.28, warm:0.030, eff:1.00, label:"low"},
@@ -573,6 +786,13 @@ function currentMixture(){
 }
 function updateMixtureInfo(){
   const m=currentMixture(), A=DATA.solvents[m.a], B=DATA.solvents[m.b];
+  if(bridgeMode){
+    $("compALabel").textContent="interne Komponente";
+    $("mixtureInfo").innerHTML="<strong>Unbekanntes organisches Filtrat</strong><br>Zwei flüchtige Komponenten werden fraktionierend getrennt; ein nichtflüchtiger Analyt verbleibt im Rückstand.";
+    $("hazards").innerHTML="";
+    const opt=$("mixtureSelect").selectedOptions[0]; if(opt) opt.textContent="Hub-Probe · unbekanntes Gemisch";
+    return;
+  }
   $("compALabel").textContent = solventName(m.a);
   $("mixtureInfo").innerHTML = `
     <strong>${solventName(m.a)}</strong> (${A.formula}, Sdp. ${fmt(A.bp)} °C) /
@@ -591,7 +811,9 @@ function setLanguage(newLang){
     if(I18N[lang][key]) el.textContent=I18N[lang][key];
   });
   populateMixtures();
+  if(bridgeMode && bridgeInput) $("mixtureSelect").value=bridgeInput.model_ref;
   updateMixtureInfo();
+  if(bridgeMode) maskHubControls();
   if(chart){
     chart.data.datasets[0].label=t("potTemperature");
     chart.data.datasets[1].label=t("headTemperature");
@@ -610,7 +832,7 @@ function initState(){
     potVol:[volA, volB],
     startVol:[volA, volB],
     fractions:[[0,0],[0,0],[0,0]],
-    history:[], samples:[null,null,null], finished:false,
+    history:[], samples:[null,null,null], finished:false, attemptRecorded:false,
     lastYA:null, autoCandidate:0, autoHold:0, hasStartedBoiling:false
   };
   clearChart();
@@ -800,20 +1022,59 @@ function fractionComposition(i){
 }
 
 function separationQuality(){
-  if(!state) return {score:0,label:"–",stars:""};
+  if(!state) return {score:0,label:"–",stars:"",index:0};
   const f1=fractionComposition(0), f2=fractionComposition(1), f3=fractionComposition(2);
   const total=totalDistillate() || 1;
-  const mixedPenalty=Math.min(1, f2.vol/total);
-  const purityAvg=((f1.vol>0?f1.purity:0)+(f3.vol>0?f3.purity:0))/2;
-  let score=Math.round((purityAvg*0.75 + (1-mixedPenalty)*0.25)*5);
-  if(totalDistillate()<5) score=0;
-  score=Math.max(0,Math.min(5,score));
-  const labelsDe=["noch keine Bewertung","sehr schwach","schwach","mittel","gut","sehr gut"];
-  const labelsEn=["no rating yet","very weak","weak","moderate","good","very good"];
-  return {score,label:(lang==="de"?labelsDe:labelsEn)[score],stars:"★★★★★".slice(0,score)+"☆☆☆☆☆".slice(0,5-score)};
+  const mixedFraction=Math.min(1, f2.vol/total);
+
+  // Für die analytische Weiterverwendung zählt nicht der Mittelwert:
+  // Eine sehr reine Endfraktion darf eine deutlich schlechtere andere
+  // Hauptfraktion nicht kompensieren. Daher wird die schwächere Reinheit
+  // von F1/F3 stärker gewichtet; zusätzlich wird eine große Mischfraktion
+  // als Produktverlust/unscharfer Übergang berücksichtigt.
+  const limitingPurity=Math.min(
+    f1.vol>0 ? f1.purity : 0,
+    f3.vol>0 ? f3.purity : 0
+  );
+  const index=Math.max(0,Math.min(1,
+    limitingPurity*0.80 + (1-mixedFraction)*0.20
+  ));
+
+  // Die 3-Sterne-Grenze ist zugleich die Freigabeschwelle im Hub.
+  // Einfache Destillation dieses Gemischs liefert zwar Anreicherung,
+  // soll aber noch nicht als ausreichend fraktionierte Probe gelten.
+  let score=0;
+  if(totalDistillate()>=5){
+    if(index>=0.975) score=5;
+    else if(index>=0.925) score=4;
+    else if(index>=0.890) score=3;
+    else if(index>=0.780) score=2;
+    else score=1;
+  }
+
+  const labelsDe=["noch keine Bewertung","sehr schwach","verbesserungsbedürftig","mittel","gut","sehr gut"];
+  const labelsEn=["no rating yet","very weak","needs improvement","moderate","good","very good"];
+  return {
+    score,
+    index,
+    limitingPurity,
+    mixedFraction,
+    label:(lang==="de"?labelsDe:labelsEn)[score],
+    stars:"★★★★★".slice(0,score)+"☆☆☆☆☆".slice(0,5-score)
+  };
 }
 
 function processInfoText(){
+  if(bridgeMode){
+    if(!state) return "Die Hub-Probe ist für einen neuen Destillations-Run bereit.";
+    const pot=potTotalVol(),dist=totalDistillate(),active=state.activeFraction;
+    if(state.finished) return "Die Destillation ist abgeschlossen. Beurteile die Trennqualität und entscheide, ob du diesen Run übernimmst oder mit verbesserten Einstellungen wiederholst.";
+    if(!running && dist===0 && state.tempPot<30) return "Wähle Kolonnenleistung, Heizleistung und Fraktionsmodus. Stoffidentitäten und Startzusammensetzung sind Teil der unbekannten Probe.";
+    if(totalDistillate()===0) return "Die Probe wird erwärmt. Noch wird kein Destillat gesammelt.";
+    if(active===0) return "Am Kolonnenkopf ist die niedriger siedende Komponente deutlich angereichert; Fraktion 1 wird gesammelt.";
+    if(active===1) return "Der Übergangsbereich enthält merkliche Anteile beider flüchtigen Komponenten; die Mischfraktion wird gesammelt.";
+    return "Die niedriger siedende Komponente ist weitgehend abgereichert; nun wird die höher siedende Fraktion gesammelt.";
+  }
   if(!state) return lang==="de"
     ? "Die Simulation ist bereit. Wähle Gemisch, Startzusammensetzung, Heizleistung und Kolonne und starte die Destillation."
     : "The simulation is ready. Choose mixture, starting composition, heating power and column, then start distillation.";
@@ -857,25 +1118,29 @@ function updatePurityDisplay(){
   if(!state) return;
   const m=currentMixture();
   for(let i=0;i<3;i++){
-    const c=fractionComposition(i);
+    const cfrac=fractionComposition(i);
     const mainEl=$(`purityF${i+1}Main`);
     const valEl=$(`purityF${i+1}Val`);
     const barEl=$(`purityF${i+1}Bar`);
     if(!mainEl || !valEl || !barEl) continue;
-    if(c.vol<=0.001){
+    if(cfrac.vol<=0.001){
       mainEl.textContent = lang==="de" ? "noch leer" : "empty";
       valEl.textContent = "–";
       barEl.style.width = "0%";
+    }else if(bridgeMode){
+      mainEl.textContent = `${fmt(cfrac.vol,1)} mL · ${i===1?"Mischfraktion":"Fraktion "+(i+1)}`;
+      valEl.textContent = i===1 ? "beide flüchtigen Komponenten vertreten" : qualitativePurity(cfrac.purity,i);
+      const displayQuality=i===1 ? Math.max(0,1-Math.abs(cfrac.fracA-0.5)*2) : cfrac.purity;
+      barEl.style.width=`${Math.max(0,Math.min(100,displayQuality*100))}%`;
     }else{
       const nameA=solventName(m.a), nameB=solventName(m.b);
-      mainEl.textContent = `${fmt(c.vol,1)} mL gesamt · ${nameA} ${fmt(c.fracA*100,1)} % / ${nameB} ${fmt((1-c.fracA)*100,1)} %`;
-      valEl.textContent = `${fmt(c.a,1)} mL ${nameA} + ${fmt(c.b,1)} mL ${nameB} · ${lang==="de"?"Reinheit":"purity"} ${fmt(c.purity*100,1)} %`;
-      barEl.style.width = `${Math.max(0,Math.min(100,c.fracA*100))}%`;
+      mainEl.textContent = `${fmt(cfrac.vol,1)} mL gesamt · ${nameA} ${fmt(cfrac.fracA*100,1)} % / ${nameB} ${fmt((1-cfrac.fracA)*100,1)} %`;
+      valEl.textContent = `${fmt(cfrac.a,1)} mL ${nameA} + ${fmt(cfrac.b,1)} mL ${nameB} · ${lang==="de"?"Reinheit":"purity"} ${fmt(cfrac.purity*100,1)} %`;
+      barEl.style.width = `${Math.max(0,Math.min(100,cfrac.fracA*100))}%`;
     }
   }
   updateBalanceDisplay();
 }
-
 
 function fractionLabel(i){ return [t("fraction1"),t("fraction2"),t("fraction3")][i] || `F${i+1}`; }
 
@@ -957,7 +1222,7 @@ function protocolText(){
   const startTotal=((state.startVol?.[0]||0)+(state.startVol?.[1]||0)) || 1;
   const lines=[];
   lines.push(lang==="de" ? "VIRTUELLES DESTILLATIONSPROTOKOLL" : "VIRTUAL DISTILLATION REPORT");
-  lines.push("Version: 0.9.0");
+  lines.push("Version: 0.9.1");
   lines.push(`Gemisch / mixture: ${A} / ${B}`);
   lines.push(`${lang==="de"?"Gesamtvolumen":"Total volume"}: ${fmt(startTotal,1)} mL`);
   lines.push(`${lang==="de"?"Startzusammensetzung":"Start composition"}: ${A} ${fmt((state.startVol?.[0]||0)/startTotal*100,1)} % / ${B} ${fmt((state.startVol?.[1]||0)/startTotal*100,1)} %`);
@@ -1033,17 +1298,55 @@ function updateEndReport(){
   if(!state.finished){
     box.classList.remove("show");
     content.innerHTML="";
+    updateBridgeAccept();
     return;
   }
-  const m=currentMixture();
+
+  recordFinishedAttempt();
   const q=separationQuality();
+
+  if(bridgeMode){
+    const min=Number(bridgeInput?.minimum_quality_score??3);
+    const rows=[0,1,2].map(i=>{
+      const cfrac=fractionComposition(i);
+      const label=[t("fraction1"),t("fraction2"),t("fraction3")][i];
+      const quality=cfrac.vol>0 ? qualitativePurity(cfrac.purity,i) : "–";
+      return `<tr><td>${label}</td><td>${fmt(cfrac.vol,1)} mL</td><td>${quality}</td></tr>`;
+    }).join("");
+    const advice=qualityAdvice();
+    const adviceHtml=advice.length?"<ul>"+advice.map(x=>"<li>"+x+"</li>").join("")+"</ul>":"";
+    const ok=q.score>=min;
+    const attempts=attemptHistory.map(a=>`<tr><td>${a.run}</td><td>${a.score}/5</td><td>${a.column}</td><td>${a.heat}</td><td>${a.fractionMode}</td></tr>`).join("");
+    content.innerHTML=`
+      <div style="margin-bottom:8px">Trennqualität: <span class="stars">${q.stars}</span> ${q.label}</div>
+      <table><thead><tr><th>Fraktion</th><th>Volumen</th><th>Qualitative Bewertung</th></tr></thead><tbody>${rows}</tbody></table>
+      <div class="infoHint" style="margin-top:8px">Die Gesamtqualität berücksichtigt die schwächere Reinheit von F1/F3 und die Größe der Mischfraktion.</div>
+      <div class="qualityFeedback ${ok?"good":"warn"}">
+        <strong>${ok?"Run kann übernommen werden.":"Noch nicht an den Hub übertragbar."}</strong><br>
+        ${ok
+          ? (q.score===3?"Die Trennung ist brauchbar. Im späteren GC werden Nebenkomponenten noch deutlich sichtbar sein.":"Die Fraktionen sind für die weitere Analyse gut geeignet.")
+          : "Verbessere die Methode und starte anschließend einen neuen Run."}
+        ${adviceHtml}
+      </div>
+      <div class="infoHint" style="margin-top:10px"><strong>Versuchshistorie</strong></div>
+      <table class="attemptTable"><thead><tr><th>Run</th><th>Qualität</th><th>Kolonne</th><th>Heizung</th><th>Fraktionsmodus</th></tr></thead><tbody>${attempts}</tbody></table>
+    `;
+    box.classList.add("show");
+    updateBridgeAccept();
+    setBridgeBanner(ok
+      ? "Mindestqualität erreicht. Du kannst diesen Run übernehmen oder freiwillig noch weiter optimieren."
+      : "Mindestqualität noch nicht erreicht. Nutze die Hinweise und starte einen neuen Run.");
+    return;
+  }
+
+  const m=currentMixture();
   const rows=[0,1,2].map(i=>{
-    const c=fractionComposition(i);
+    const cfrac=fractionComposition(i);
     const label=[t("fraction1"),t("fraction2"),t("fraction3")][i];
-    const comp=c.vol>0 ? `${solventName(m.a)} ${fmt(c.fracA*100,1)} % / ${solventName(m.b)} ${fmt((1-c.fracA)*100,1)} %` : "–";
-    const purity=c.vol>0 ? `${fmt(c.purity*100,1)} %` : "–";
-    const contains=c.vol>0 ? `${fmt(c.a,1)} mL + ${fmt(c.b,1)} mL` : "–";
-    return `<tr><td>${label}</td><td>${fmt(c.vol,1)} mL</td><td>${comp}<br><span class="infoHint">${contains}</span></td><td>${purity}</td></tr>`;
+    const comp=cfrac.vol>0 ? `${solventName(m.a)} ${fmt(cfrac.fracA*100,1)} % / ${solventName(m.b)} ${fmt((1-cfrac.fracA)*100,1)} %` : "–";
+    const purity=cfrac.vol>0 ? `${fmt(cfrac.purity*100,1)} %` : "–";
+    const contains=cfrac.vol>0 ? `${fmt(cfrac.a,1)} mL + ${fmt(cfrac.b,1)} mL` : "–";
+    return `<tr><td>${label}</td><td>${fmt(cfrac.vol,1)} mL</td><td>${comp}<br><span class="infoHint">${contains}</span></td><td>${purity}</td></tr>`;
   }).join("");
   const qualityLine = lang==="de"
     ? `Trennqualität: <span class="stars">${q.stars}</span> ${q.label}`
@@ -1082,9 +1385,9 @@ function render(){
 
   const [nA,nB]=potMoles(), xA=(nA+nB)>0?nA/(nA+nB):0;
   const liquidVolA=potTotalVol()>0 ? state.potVol[0]/potTotalVol() : 0;
-  $("liquidComp").textContent=`${solventName(m.a)} ${fmt(liquidVolA*100,0)} % / ${solventName(m.b)} ${fmt((1-liquidVolA)*100,0)} %`;
+  $("liquidComp").textContent=bridgeMode ? "interne Zusammensetzung verborgen" : `${solventName(m.a)} ${fmt(liquidVolA*100,0)} % / ${solventName(m.b)} ${fmt((1-liquidVolA)*100,0)} %`;
   const yDisplay = state.lastYA===null ? liquidVolA : state.lastYA;
-  $("vapourComp").textContent=`${solventName(m.a)} ${fmt(yDisplay*100,0)} % / ${solventName(m.b)} ${fmt((1-yDisplay)*100,0)} %`;
+  $("vapourComp").textContent=bridgeMode ? "interne Zusammensetzung verborgen" : `${solventName(m.a)} ${fmt(yDisplay*100,0)} % / ${solventName(m.b)} ${fmt((1-yDisplay)*100,0)} %`;
   $("liquidBarA").style.width=`${Math.max(0,Math.min(100,liquidVolA*100))}%`;
   $("vapourBarA").style.width=`${Math.max(0,Math.min(100,yDisplay*100))}%`;
   const fracNames=[t("fraction1"),t("fraction2"),t("fraction3")];
@@ -1172,7 +1475,16 @@ function bind(){
   });
   $("languageSelect").addEventListener("change",e=>setLanguage(e.target.value));
   $("startPauseBtn").addEventListener("click",startPause);
-  $("resetBtn").addEventListener("click",()=>{ running=false; stopTimer(); initState(); setStatus("ready"); });
+  $("resetBtn").addEventListener("click",()=>{
+    running=false; stopTimer();
+    if(bridgeMode && bridgeInput){
+      $("mixtureSelect").value=bridgeInput.model_ref;
+      $("volumeRange").value=String(bridgeInput.initial_volume_ml??100);
+      $("compositionRange").value=String(bridgeInput.initial_component_a_percent??50);
+    }
+    initState(); setStatus("ready"); maskHubControls();
+    if(bridgeMode) setBridgeBanner("Neuer Run bereit. Passe Kolonne, Heizleistung oder Fraktionsmodus anhand der letzten Rückmeldung an.");
+  });
   $("switchFractionBtn").addEventListener("click",switchFraction);
   $("fractionModeSelect").addEventListener("change",()=>render());
   $("chartLiveBtn").addEventListener("click",()=>setChartMode("live"));
@@ -1190,6 +1502,7 @@ setupChart();
 bind();
 updateMixtureInfo();
 initState();
+if(bridgeMode) initAnalytikBridge();
 </script>
 </body>
 </html>
