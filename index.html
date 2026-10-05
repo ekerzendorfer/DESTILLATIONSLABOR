@@ -598,6 +598,12 @@ function maskHubControls(){
   $("mixtureSelect").disabled=true;
   $("volumeRange").disabled=true;
   $("compositionRange").disabled=true;
+  const compRow=$("compositionRange").closest(".row");
+  if(compRow){
+    compRow.style.display="none";
+    const compLabel=compRow.previousElementSibling;
+    if(compLabel && compLabel.tagName==="LABEL") compLabel.style.display="none";
+  }
   $("hazards").innerHTML="";
   $("compALabel").textContent="interne Komponente";
   $("resetBtn").textContent="Neuer Run";
