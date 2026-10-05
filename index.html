@@ -564,6 +564,7 @@ function qualitativePurity(purity,index){
 function qualityAdvice(){
   if(!state) return [];
   const q=separationQuality(),advice=[];
+  if(q.score>=5) return advice;
   const stages=Number($("columnSelect").value),heat=$("heatSelect").value;
   const f2=fractionComposition(1),total=totalDistillate()||1;
   if(stages<=2) advice.push("Verwende eine leistungsfähigere Kolonne, damit sich die beiden flüchtigen Komponenten stärker anreichern.");
@@ -1024,27 +1025,40 @@ function separationQuality(){
   if(!state) return {score:0,label:"–",stars:"",index:0};
   const f1=fractionComposition(0), f2=fractionComposition(1), f3=fractionComposition(2);
   const total=totalDistillate() || 1;
-  const mixedPenalty=Math.min(1, f2.vol/total);
-  const purityAvg=((f1.vol>0?f1.purity:0)+(f3.vol>0?f3.purity:0))/2;
-  const index=Math.max(0,Math.min(1,purityAvg*0.75 + (1-mixedPenalty)*0.25));
+  const mixedFraction=Math.min(1, f2.vol/total);
 
-  // Sterne bewusst nicht einfach runden:
-  // 5 Sterne sind für nahezu optimale Trennung reserviert, damit methodische
-  // Verbesserungen (Kolonne, Heizleistung, Fraktionsführung) sichtbar bleiben.
+  // Für die analytische Weiterverwendung zählt nicht der Mittelwert:
+  // Eine sehr reine Endfraktion darf eine deutlich schlechtere andere
+  // Hauptfraktion nicht kompensieren. Daher wird die schwächere Reinheit
+  // von F1/F3 stärker gewichtet; zusätzlich wird eine große Mischfraktion
+  // als Produktverlust/unscharfer Übergang berücksichtigt.
+  const limitingPurity=Math.min(
+    f1.vol>0 ? f1.purity : 0,
+    f3.vol>0 ? f3.purity : 0
+  );
+  const index=Math.max(0,Math.min(1,
+    limitingPurity*0.80 + (1-mixedFraction)*0.20
+  ));
+
+  // Die 3-Sterne-Grenze ist zugleich die Freigabeschwelle im Hub.
+  // Einfache Destillation dieses Gemischs liefert zwar Anreicherung,
+  // soll aber noch nicht als ausreichend fraktionierte Probe gelten.
   let score=0;
   if(totalDistillate()>=5){
-    if(index>=0.980) score=5;
-    else if(index>=0.900) score=4;
-    else if(index>=0.800) score=3;
-    else if(index>=0.680) score=2;
+    if(index>=0.975) score=5;
+    else if(index>=0.925) score=4;
+    else if(index>=0.890) score=3;
+    else if(index>=0.780) score=2;
     else score=1;
   }
 
-  const labelsDe=["noch keine Bewertung","sehr schwach","schwach","mittel","gut","sehr gut"];
-  const labelsEn=["no rating yet","very weak","weak","moderate","good","very good"];
+  const labelsDe=["noch keine Bewertung","sehr schwach","verbesserungsbedürftig","mittel","gut","sehr gut"];
+  const labelsEn=["no rating yet","very weak","needs improvement","moderate","good","very good"];
   return {
     score,
     index,
+    limitingPurity,
+    mixedFraction,
     label:(lang==="de"?labelsDe:labelsEn)[score],
     stars:"★★★★★".slice(0,score)+"☆☆☆☆☆".slice(0,5-score)
   };
@@ -1306,6 +1320,7 @@ function updateEndReport(){
     content.innerHTML=`
       <div style="margin-bottom:8px">Trennqualität: <span class="stars">${q.stars}</span> ${q.label}</div>
       <table><thead><tr><th>Fraktion</th><th>Volumen</th><th>Qualitative Bewertung</th></tr></thead><tbody>${rows}</tbody></table>
+      <div class="infoHint" style="margin-top:8px">Die Gesamtqualität berücksichtigt die schwächere Reinheit von F1/F3 und die Größe der Mischfraktion.</div>
       <div class="qualityFeedback ${ok?"good":"warn"}">
         <strong>${ok?"Run kann übernommen werden.":"Noch nicht an den Hub übertragbar."}</strong><br>
         ${ok
