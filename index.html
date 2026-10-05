@@ -1021,17 +1021,33 @@ function fractionComposition(i){
 }
 
 function separationQuality(){
-  if(!state) return {score:0,label:"–",stars:""};
+  if(!state) return {score:0,label:"–",stars:"",index:0};
   const f1=fractionComposition(0), f2=fractionComposition(1), f3=fractionComposition(2);
   const total=totalDistillate() || 1;
   const mixedPenalty=Math.min(1, f2.vol/total);
   const purityAvg=((f1.vol>0?f1.purity:0)+(f3.vol>0?f3.purity:0))/2;
-  let score=Math.round((purityAvg*0.75 + (1-mixedPenalty)*0.25)*5);
-  if(totalDistillate()<5) score=0;
-  score=Math.max(0,Math.min(5,score));
+  const index=Math.max(0,Math.min(1,purityAvg*0.75 + (1-mixedPenalty)*0.25));
+
+  // Sterne bewusst nicht einfach runden:
+  // 5 Sterne sind für nahezu optimale Trennung reserviert, damit methodische
+  // Verbesserungen (Kolonne, Heizleistung, Fraktionsführung) sichtbar bleiben.
+  let score=0;
+  if(totalDistillate()>=5){
+    if(index>=0.980) score=5;
+    else if(index>=0.900) score=4;
+    else if(index>=0.800) score=3;
+    else if(index>=0.680) score=2;
+    else score=1;
+  }
+
   const labelsDe=["noch keine Bewertung","sehr schwach","schwach","mittel","gut","sehr gut"];
   const labelsEn=["no rating yet","very weak","weak","moderate","good","very good"];
-  return {score,label:(lang==="de"?labelsDe:labelsEn)[score],stars:"★★★★★".slice(0,score)+"☆☆☆☆☆".slice(0,5-score)};
+  return {
+    score,
+    index,
+    label:(lang==="de"?labelsDe:labelsEn)[score],
+    stars:"★★★★★".slice(0,score)+"☆☆☆☆☆".slice(0,5-score)
+  };
 }
 
 function processInfoText(){
