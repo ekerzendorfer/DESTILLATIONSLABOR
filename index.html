@@ -155,7 +155,7 @@
 <header>
   <div>
     <h1 data-i18n="appTitle">Virtuelle fraktionierende Destillation</h1>
-    <div class="sub" data-i18n="subtitle">Version 0.9.1 – korrigierter Teststand mit plausiblerer Fraktionierung</div>
+    <div class="sub" data-i18n="subtitle">Version 0.9.2 – korrigierter Teststand mit plausiblerer Fraktionierung</div>
   </div>
   <div class="lang">
     <span class="small" data-i18n="language">Sprache</span>
@@ -221,6 +221,7 @@
         <option value="10" selected>10×</option>
         <option value="20">20×</option>
       </select>
+      <div class="small" id="speedModelHint">Der Zeitmaßstab verändert nur die Darstellungsgeschwindigkeit, nicht das Simulationsergebnis.</div>
 
       <label data-i18n="fractionMode">Fraktionswechsel</label>
       <select id="fractionModeSelect">
@@ -236,7 +237,7 @@
 
       <hr style="border-color:rgba(148,163,184,.16);margin:16px 0">
       <div class="note" data-i18n="modelNote">
-        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.1 bewusst nicht berücksichtigt.
+        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.2 bewusst nicht berücksichtigt.
       </div>
     </div>
   </section>
@@ -351,7 +352,7 @@
             <div class="miniBar"><span id="purityF1Bar"></span></div>
           </div>
           <div class="purityCard">
-            <div class="pTitle" data-i18n="fraction2">Mischfraktion</div>
+            <div class="pTitle" data-i18n="fraction2">Übergangsfraktion</div>
             <div class="pMain" id="purityF2Main">–</div>
             <div class="pVal" id="purityF2Val">–</div>
             <div class="miniBar"><span id="purityF2Bar"></span></div>
@@ -378,7 +379,7 @@
             <button id="sampleF1Btn" type="button" data-i18n="takeSample">Probe entnehmen</button>
           </div>
           <div class="sampleCard">
-            <div class="sampleTitle" data-i18n="fraction2">Mischfraktion</div>
+            <div class="sampleTitle" data-i18n="fraction2">Übergangsfraktion</div>
             <div id="sampleF2Info">–</div>
             <button id="sampleF2Btn" type="button" data-i18n="takeSample">Probe entnehmen</button>
           </div>
@@ -412,7 +413,7 @@
         <div id="protocolBox" class="protocolBox">Noch kein Protokoll erzeugt.</div>
         <div class="smallNote">Das Protokoll enthält Einstellungen, Fraktionen, Messwerte und eine kompakte Temperaturverlaufs-Tabelle. CSV/Download kann darauf später aufbauen.</div>
       </div>
-      <div class="legend" id="apparatusLegend">F1 = niedrig siedende Fraktion · F2 = Mischfraktion · F3 = höher siedende Fraktion</div>
+      <div class="legend" id="apparatusLegend">F1 = niedrig siedende Fraktion · F2 = Übergangsfraktion · F3 = höher siedende Fraktion</div>
     </div>
   </section>
 
@@ -440,7 +441,7 @@
 
       <div class="fractions">
         <div id="fracBox0" class="frac active"><div class="name" data-i18n="fraction1">Fraktion 1</div><div class="vol"><span id="f1Vol">0,0</span> mL</div></div>
-        <div id="fracBox1" class="frac"><div class="name" data-i18n="fraction2">Mischfraktion</div><div class="vol"><span id="f2Vol">0,0</span> mL</div></div>
+        <div id="fracBox1" class="frac"><div class="name" data-i18n="fraction2">Übergangsfraktion</div><div class="vol"><span id="f2Vol">0,0</span> mL</div></div>
         <div id="fracBox2" class="frac"><div class="name" data-i18n="fraction3">Fraktion 2</div><div class="vol"><span id="f3Vol">0,0</span> mL</div></div>
       </div>
 
@@ -498,26 +499,26 @@ const DATA = {
 
 const I18N = {
   de:{
-    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.9.1 – korrigierter Teststand mit plausiblerer Fraktionierung",
+    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.9.2 – korrigierter Teststand mit plausiblerer Fraktionierung",
     language:"Sprache", controls:"Einstellungen", mixture:"Gemisch", totalVolume:"Gesamtvolumen", startComposition:"Startanteil Komponente A",
     columnPower:"Säulenleistung", simpleDistillation:"einfache Destillation", shortColumn:"kurze Kolonne", mediumColumn:"mittlere Kolonne", goodColumn:"gute Kolonne",
     heatPower:"Heizleistung", low:"niedrig", medium:"mittel", high:"hoch", timeScale:"Zeitmaßstab", fractionMode:"Fraktionswechsel",
     autoFraction:"automatisch", manualFraction:"manuell", start:"Start", pause:"Pause", reset:"Zurücksetzen", switchFraction:"Fraktion wechseln",
-    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.1 bewusst nicht berücksichtigt.",
+    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.2 bewusst nicht berücksichtigt.",
     apparatusTitle:"Apparatur", dashboard:"Messwerte", potTemperature:"Sumpftemperatur", headTemperature:"Kopftemperatur", potVolume:"Kolbeninhalt",
-    totalDistillate:"Destillat gesamt", fraction1:"Fraktion 1", fraction2:"Mischfraktion", fraction3:"Fraktion 2", liquidComposition:"Zusammensetzung im Kolben",
+    totalDistillate:"Destillat gesamt", fraction1:"Fraktion 1", fraction2:"Übergangsfraktion", fraction3:"Fraktion 2", liquidComposition:"Zusammensetzung im Kolben",
     vapourComposition:"Dampf am Kopf", simTime:"Simulationszeit", status:"Status", chartTitle:"Temperaturverlauf", activeCollection:"Aktive Sammlung", liveView:"Live-Ansicht", fullView:"Gesamtverlauf", ready:"bereit", heating:"heizt auf",
     distilling:"destilliert", finished:"beendet", component:"Komponente", hazards:"Gefahrenkennzeichnung", volatile:"flüchtigere Komponente"
   },
   en:{
-    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.9.1 – corrected test build with more plausible fractionation",
+    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.9.2 – corrected test build with more plausible fractionation",
     language:"Language", controls:"Settings", mixture:"Mixture", totalVolume:"Total volume", startComposition:"Initial share of component A",
     columnPower:"Column performance", simpleDistillation:"simple distillation", shortColumn:"short column", mediumColumn:"medium column", goodColumn:"good column",
     heatPower:"Heating power", low:"low", medium:"medium", high:"high", timeScale:"Time scale", fractionMode:"Fraction switching",
     autoFraction:"automatic", manualFraction:"manual", start:"Start", pause:"Pause", reset:"Reset", switchFraction:"Switch fraction",
-    modelNote:"Model note: This simulation uses a simplified model of ideal binary mixtures. Water impurities, activity coefficients, heat losses and real apparatus details are deliberately ignored in version 0.8.2.",
+    modelNote:"Model note: This simulation uses a simplified model of ideal binary mixtures. Water impurities, activity coefficients, heat losses and real apparatus details are deliberately ignored in version 0.9.2.",
     apparatusTitle:"Apparatus", dashboard:"Measurements", potTemperature:"Pot temperature", headTemperature:"Head temperature", potVolume:"Pot volume",
-    totalDistillate:"Total distillate", fraction1:"Fraction 1", fraction2:"Mixed fraction", fraction3:"Fraction 2", liquidComposition:"Liquid in pot",
+    totalDistillate:"Total distillate", fraction1:"Fraction 1", fraction2:"Transition fraction", fraction3:"Fraction 2", liquidComposition:"Liquid in pot",
     vapourComposition:"Vapour at head", simTime:"Simulation time", status:"Status", chartTitle:"Temperature profile", activeCollection:"Active collection", liveView:"Live view", fullView:"Full profile", ready:"ready", heating:"heating",
     distilling:"distilling", finished:"finished", component:"Component", hazards:"Hazard labels", volatile:"more volatile component"
   }
@@ -554,7 +555,7 @@ function setBridgeBanner(message,isError=false){
   $("bridgeMessage").textContent=message||"";
 }
 function qualitativePurity(purity,index){
-  if(index===1) return "Mischfraktion";
+  if(index===1) return "Übergangsfraktion";
   if(purity>=0.95) return "sehr hohe Reinheit";
   if(purity>=0.88) return "hohe Reinheit";
   if(purity>=0.78) return "brauchbare Reinheit";
@@ -570,7 +571,7 @@ function qualityAdvice(){
   if(stages<=2) advice.push("Verwende eine leistungsfähigere Kolonne, damit sich die beiden flüchtigen Komponenten stärker anreichern.");
   if(heat==="high") advice.push("Verringere die Heizleistung. Zu schnelles Destillieren verschlechtert in diesem Modell die Trennwirkung der Kolonne.");
   else if(heat==="medium" && q.score<3) advice.push("Probiere eine niedrigere Heizleistung, um der Kolonne mehr Zeit für die Trennung zu geben.");
-  if(f2.vol/total>0.45) advice.push("Die Mischfraktion ist sehr groß. Beobachte den Übergangsbereich genauer und wähle bei manuellem Betrieb die Fraktionswechsel gezielter.");
+  if(f2.vol/total>0.45) advice.push("Die Übergangsfraktion ist sehr groß. Beobachte den Übergangsbereich genauer und wähle bei manuellem Betrieb die Fraktionswechsel gezielter.");
   if($("fractionModeSelect").value==="manual" && q.score<3) advice.push("Orientiere die manuellen Fraktionswechsel am Temperaturverlauf und am Übergang zwischen den Siedebereichen.");
   if(!advice.length && q.score<3) advice.push("Kombiniere eine bessere Kolonne mit niedriger bis mittlerer Heizleistung und starte einen neuen Run.");
   return advice;
@@ -687,7 +688,7 @@ function sendBridgeResult(){
     case_id:bridgeRun.case_id,
     sample_id:bridgeRun.sample_id,
     app_id:"DESTILLATION_LAB",
-    app_version:"0.9.1",
+    app_version:"0.9.2",
     analysis_type:"FRACTIONAL_DISTILLATION",
     status:"completed",
     source:"app",
@@ -847,18 +848,20 @@ function potTotalVol(){ return state.potVol[0]+state.potVol[1]; }
 function fractionTotal(i){ return state.fractions[i][0]+state.fractions[i][1]; }
 function totalDistillate(){ return state.fractions.reduce((s,f)=>s+f[0]+f[1],0); }
 
-function simStep(){
+function simMicroStep(dt){
   if(!state || state.finished) return;
   const m=currentMixture(), A=DATA.solvents[m.a], B=DATA.solvents[m.b];
   const heat = heatMap[$("heatSelect").value];
-  const speed = Number($("speedSelect").value);
-  const dt = 0.05 * speed; // simulierte Minuten je Tick
   state.timeMin += dt;
 
   const [nA,nB]=potMoles();
   const nTot=nA+nB;
   if(nTot < 0.015 || potTotalVol() < 2){
-    state.finished=true; running=false; stopTimer(); $("statusText").textContent=t("finished"); render(); return;
+    state.finished=true;
+    running=false;
+    stopTimer();
+    $("statusText").textContent=t("finished");
+    return;
   }
   const xA=nA/nTot;
   const bp=bubblePoint(xA,A,B);
@@ -871,8 +874,7 @@ function simStep(){
     state.tempPot = bp;
     const stages = Number($("columnSelect").value);
     const yRaw = adjustedHeadComposition(enrichThroughColumn(xA,bp,A,B,stages,heat.eff), xA, stages, heat);
-    // V0.9.0: Beim ersten Sieden Kopfzusammensetzung direkt setzen.
-    // Dadurch fällt zu Beginn kein künstlicher Anteil in die Mischfraktion.
+
     if(!state.hasStartedBoiling || state.lastYA===null){
       state.lastYA = yRaw;
       state.hasStartedBoiling = true;
@@ -881,10 +883,12 @@ function simStep(){
       state.autoCandidate = startTarget;
       state.autoHold = 0;
     } else {
-      // Kleiner Kolonnen-/Kopf-Holdup: verhindert unrealistisch abrupte Sprünge der Dampfzusammensetzung.
+      // Fester interner Integrationsschritt: Kopf-Holdup und Fraktionswechsel
+      // dürfen nicht von der gewählten Darstellungsgeschwindigkeit abhängen.
       const headResponse = Math.max(0.18, 0.38 - stages*0.016);
       state.lastYA += (yRaw - state.lastYA) * headResponse;
     }
+
     const yHead = Math.max(0, Math.min(1, state.lastYA));
     const headTarget = dewPoint(yHead,A,B);
     state.tempHead += (headTarget - state.tempHead) * 0.20;
@@ -896,7 +900,8 @@ function simStep(){
       const dn = dV/mvMix;
       const dVA = Math.min(state.potVol[0], dn*yHead*moleVolume(A));
       const dVB = Math.min(state.potVol[1], dn*(1-yHead)*moleVolume(B));
-      state.potVol[0] -= dVA; state.potVol[1] -= dVB;
+      state.potVol[0] -= dVA;
+      state.potVol[1] -= dVB;
 
       const fracIndex = chooseFraction(yHead);
       state.activeFraction=fracIndex;
@@ -905,10 +910,26 @@ function simStep(){
     }
     setStatus("distilling");
   }
+}
+
+function simStep(){
+  if(!state || state.finished) return;
+
+  // 0,05 simulierte Minuten bleiben der feste numerische Integrationsschritt.
+  // 5× / 10× / 20× bestimmt ausschließlich, wie viele identische
+  // Mikroschritte pro Bildschirm-Tick berechnet werden.
+  const speed = Number($("speedSelect").value);
+  const microDt = 0.05;
+  const microSteps = Math.max(1, Math.round(speed));
+
+  for(let i=0;i<microSteps;i++){
+    simMicroStep(microDt);
+    if(!state || state.finished) break;
+  }
+
   logHistory();
   render();
 }
-
 
 function adjustedHeadComposition(yRaw, xA, stages, heat){
   const m=currentMixture();
@@ -933,7 +954,7 @@ function dynamicCutLimits(){
   const base=m.cut || {high:0.86,low:0.14,hold:2};
   const stages=Number($("columnSelect").value);
   const heat=heatMap[$("heatSelect").value];
-  // Bei einfacher/kurzer Kolonne und höherer Heizleistung soll nicht fast alles als Mischfraktion zählen.
+  // Bei einfacher/kurzer Kolonne und höherer Heizleistung soll nicht fast alles als Übergangsfraktion zählen.
   // Die Grenzwerte werden dann etwas toleranter, bei guter Kolonne etwas strenger.
   const stageRelax = Math.max(0, (5 - stages) / 5) * 0.10;
   const heatRelax = Math.max(0, heat.rate-0.28) * 0.05;
@@ -1030,7 +1051,7 @@ function separationQuality(){
   // Für die analytische Weiterverwendung zählt nicht der Mittelwert:
   // Eine sehr reine Endfraktion darf eine deutlich schlechtere andere
   // Hauptfraktion nicht kompensieren. Daher wird die schwächere Reinheit
-  // von F1/F3 stärker gewichtet; zusätzlich wird eine große Mischfraktion
+  // von F1/F3 stärker gewichtet; zusätzlich wird eine große Übergangsfraktion
   // als Produktverlust/unscharfer Übergang berücksichtigt.
   const limitingPurity=Math.min(
     f1.vol>0 ? f1.purity : 0,
@@ -1072,7 +1093,7 @@ function processInfoText(){
     if(!running && dist===0 && state.tempPot<30) return "Wähle Kolonnenleistung, Heizleistung und Fraktionsmodus. Stoffidentitäten und Startzusammensetzung sind Teil der unbekannten Probe.";
     if(totalDistillate()===0) return "Die Probe wird erwärmt. Noch wird kein Destillat gesammelt.";
     if(active===0) return "Am Kolonnenkopf ist die niedriger siedende Komponente deutlich angereichert; Fraktion 1 wird gesammelt.";
-    if(active===1) return "Der Übergangsbereich enthält merkliche Anteile beider flüchtigen Komponenten; die Mischfraktion wird gesammelt.";
+    if(active===1) return "Der Übergangsbereich enthält merkliche Anteile beider flüchtigen Komponenten; die Übergangsfraktion wird gesammelt.";
     return "Die niedriger siedende Komponente ist weitgehend abgereichert; nun wird die höher siedende Fraktion gesammelt.";
   }
   if(!state) return lang==="de"
@@ -1106,8 +1127,8 @@ function processInfoText(){
   }
   if(active===1){
     return lang==="de"
-      ? `Die Zusammensetzung am Kolonnenkopf ändert sich deutlich. Der Dampf enthält nun merkliche Anteile beider Komponenten; daher wird die Mischfraktion gesammelt.`
-      : `The composition at the column head is changing noticeably. The vapour now contains substantial amounts of both components, so the mixed fraction is collected.`;
+      ? `Die Zusammensetzung am Kolonnenkopf ändert sich deutlich. Der Dampf enthält nun merkliche Anteile beider Komponenten; daher wird die Übergangsfraktion gesammelt.`
+      : `The composition at the column head is changing noticeably. The vapour now contains substantial amounts of both components, so the transition fraction is collected.`;
   }
   return lang==="de"
     ? `${A} ist im Kolben weitgehend abgereichert. Nun geht überwiegend ${B} über; deshalb wird Fraktion 2 gesammelt.`
@@ -1128,7 +1149,7 @@ function updatePurityDisplay(){
       valEl.textContent = "–";
       barEl.style.width = "0%";
     }else if(bridgeMode){
-      mainEl.textContent = `${fmt(cfrac.vol,1)} mL · ${i===1?"Mischfraktion":"Fraktion "+(i+1)}`;
+      mainEl.textContent = `${fmt(cfrac.vol,1)} mL · ${i===1?"Übergangsfraktion":"Fraktion "+(i+1)}`;
       valEl.textContent = i===1 ? "beide flüchtigen Komponenten vertreten" : qualitativePurity(cfrac.purity,i);
       const displayQuality=i===1 ? Math.max(0,1-Math.abs(cfrac.fracA-0.5)*2) : cfrac.purity;
       barEl.style.width=`${Math.max(0,Math.min(100,displayQuality*100))}%`;
@@ -1320,7 +1341,7 @@ function updateEndReport(){
     content.innerHTML=`
       <div style="margin-bottom:8px">Trennqualität: <span class="stars">${q.stars}</span> ${q.label}</div>
       <table><thead><tr><th>Fraktion</th><th>Volumen</th><th>Qualitative Bewertung</th></tr></thead><tbody>${rows}</tbody></table>
-      <div class="infoHint" style="margin-top:8px">Die Gesamtqualität berücksichtigt die schwächere Reinheit von F1/F3 und die Größe der Mischfraktion.</div>
+      <div class="infoHint" style="margin-top:8px">Die Gesamtqualität berücksichtigt die schwächere Reinheit von F1/F3 und die Größe der Übergangsfraktion.</div>
       <div class="qualityFeedback ${ok?"good":"warn"}">
         <strong>${ok?"Run kann übernommen werden.":"Noch nicht an den Hub übertragbar."}</strong><br>
         ${ok
