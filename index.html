@@ -155,7 +155,7 @@
 <header>
   <div>
     <h1 data-i18n="appTitle">Virtuelle fraktionierende Destillation</h1>
-    <div class="sub" data-i18n="subtitle">Version 0.9.2 – korrigierter Teststand mit plausiblerer Fraktionierung</div>
+    <div class="sub" data-i18n="subtitle">Version 0.9.3 – graduelleres Kolonnen- und Fraktionsmodell</div>
   </div>
   <div class="lang">
     <span class="small" data-i18n="language">Sprache</span>
@@ -237,7 +237,7 @@
 
       <hr style="border-color:rgba(148,163,184,.16);margin:16px 0">
       <div class="note" data-i18n="modelNote">
-        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.2 bewusst nicht berücksichtigt.
+        Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.3 bewusst nicht berücksichtigt.
       </div>
     </div>
   </section>
@@ -493,30 +493,30 @@ const DATA = {
     { id:"acetone_toluene", a:"acetone", b:"toluene", cut:{high:0.90,low:0.10,hold:2}, model:{simpleBoost:0.18, smear:0.06}, noteDe:"Großer Siedepunktunterschied – sehr gut für den Einstieg.", noteEn:"Large boiling point difference – very good starter example." },
     { id:"cyclohexane_toluene", a:"cyclohexane", b:"toluene", cut:{high:0.86,low:0.14,hold:2}, model:{simpleBoost:0.16, smear:0.08}, noteDe:"Klassisches organisches Beispiel für fraktionierende Destillation.", noteEn:"Classic organic example for fractional distillation." },
     { id:"methanol_ethanol", a:"methanol", b:"ethanol", cut:{high:0.72,low:0.28,hold:3}, model:{simpleBoost:0.04, smear:0.16}, noteDe:"Nahe Siedepunkte – Trennung deutlich schwieriger.", noteEn:"Close boiling points – separation is much harder." },
-    { id:"ethylacetate_butanol1", a:"ethylacetate", b:"butanol1", cut:{high:0.86,low:0.14,hold:2}, model:{simpleBoost:0.20, smear:0.06}, noteDe:"Ester/Alkohol-Beispiel mit deutlichem Siedepunktunterschied.", noteEn:"Ester/alcohol example with a distinct boiling point difference." }
+    { id:"ethylacetate_butanol1", a:"ethylacetate", b:"butanol1", cut:{high:0.88,low:0.14,hold:2}, model:{smear:0.06}, noteDe:"Ester/Alkohol-Beispiel mit deutlichem Siedepunktunterschied.", noteEn:"Ester/alcohol example with a distinct boiling point difference." }
   ]
 };
 
 const I18N = {
   de:{
-    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.9.2 – korrigierter Teststand mit plausiblerer Fraktionierung",
+    appTitle:"Virtuelle fraktionierende Destillation", subtitle:"Version 0.9.3 – korrigierter Teststand mit plausiblerer Fraktionierung",
     language:"Sprache", controls:"Einstellungen", mixture:"Gemisch", totalVolume:"Gesamtvolumen", startComposition:"Startanteil Komponente A",
     columnPower:"Säulenleistung", simpleDistillation:"einfache Destillation", shortColumn:"kurze Kolonne", mediumColumn:"mittlere Kolonne", goodColumn:"gute Kolonne",
     heatPower:"Heizleistung", low:"niedrig", medium:"mittel", high:"hoch", timeScale:"Zeitmaßstab", fractionMode:"Fraktionswechsel",
     autoFraction:"automatisch", manualFraction:"manuell", start:"Start", pause:"Pause", reset:"Zurücksetzen", switchFraction:"Fraktion wechseln",
-    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.2 bewusst nicht berücksichtigt.",
+    modelNote:"Modellhinweis: Die Simulation verwendet ein vereinfachtes Modell idealer binärer Gemische. Wasserverunreinigungen, Aktivitätskoeffizienten, Wärmeverluste und reale Apparatedetails werden in Version 0.9.3 bewusst nicht berücksichtigt.",
     apparatusTitle:"Apparatur", dashboard:"Messwerte", potTemperature:"Sumpftemperatur", headTemperature:"Kopftemperatur", potVolume:"Kolbeninhalt",
     totalDistillate:"Destillat gesamt", fraction1:"Fraktion 1", fraction2:"Übergangsfraktion", fraction3:"Fraktion 2", liquidComposition:"Zusammensetzung im Kolben",
     vapourComposition:"Dampf am Kopf", simTime:"Simulationszeit", status:"Status", chartTitle:"Temperaturverlauf", activeCollection:"Aktive Sammlung", liveView:"Live-Ansicht", fullView:"Gesamtverlauf", ready:"bereit", heating:"heizt auf",
     distilling:"destilliert", finished:"beendet", component:"Komponente", hazards:"Gefahrenkennzeichnung", volatile:"flüchtigere Komponente"
   },
   en:{
-    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.9.2 – corrected test build with more plausible fractionation",
+    appTitle:"Virtual Fractional Distillation", subtitle:"Version 0.9.3 – more gradual column and fractionation model",
     language:"Language", controls:"Settings", mixture:"Mixture", totalVolume:"Total volume", startComposition:"Initial share of component A",
     columnPower:"Column performance", simpleDistillation:"simple distillation", shortColumn:"short column", mediumColumn:"medium column", goodColumn:"good column",
     heatPower:"Heating power", low:"low", medium:"medium", high:"high", timeScale:"Time scale", fractionMode:"Fraction switching",
     autoFraction:"automatic", manualFraction:"manual", start:"Start", pause:"Pause", reset:"Reset", switchFraction:"Switch fraction",
-    modelNote:"Model note: This simulation uses a simplified model of ideal binary mixtures. Water impurities, activity coefficients, heat losses and real apparatus details are deliberately ignored in version 0.9.2.",
+    modelNote:"Model note: This simulation uses a simplified model of ideal binary mixtures. Water impurities, activity coefficients, heat losses and real apparatus details are deliberately ignored in version 0.9.3.",
     apparatusTitle:"Apparatus", dashboard:"Measurements", potTemperature:"Pot temperature", headTemperature:"Head temperature", potVolume:"Pot volume",
     totalDistillate:"Total distillate", fraction1:"Fraction 1", fraction2:"Transition fraction", fraction3:"Fraction 2", liquidComposition:"Liquid in pot",
     vapourComposition:"Vapour at head", simTime:"Simulation time", status:"Status", chartTitle:"Temperature profile", activeCollection:"Active collection", liveView:"Live view", fullView:"Full profile", ready:"ready", heating:"heating",
@@ -723,8 +723,15 @@ function sendBridgeResult(){
 
 const heatMap = {
   low:{rate:0.28, warm:0.030, eff:1.00, label:"low"},
-  medium:{rate:0.55, warm:0.050, eff:0.88, label:"medium"},
-  high:{rate:0.95, warm:0.080, eff:0.68, label:"high"}
+  medium:{rate:0.55, warm:0.050, eff:0.82, label:"medium"},
+  high:{rate:0.95, warm:0.080, eff:0.50, label:"high"}
+};
+
+const columnModel = {
+  0:{equilibriumStages:0.0, holdupMl:0.20},
+  2:{equilibriumStages:0.8, holdupMl:0.30},
+  5:{equilibriumStages:1.6, holdupMl:0.40},
+  10:{equilibriumStages:2.8, holdupMl:0.55}
 };
 
 function $(id){ return document.getElementById(id); }
@@ -750,11 +757,24 @@ function vaporAtBubble(xA, tempC, sA, sB){
 }
 function enrichThroughColumn(xA, tempC, sA, sB, stages, heatEff){
   let y = vaporAtBubble(xA,tempC,sA,sB);
-  const effectiveStages = Math.max(0, Math.round(stages * heatEff));
-  for(let i=0; i<effectiveStages; i++){
-    // vereinfachter Gleichgewichtsschritt: kondensierter Dampf wird erneut verdampft
-    y = vaporAtBubble(y, tempC, sA, sB);
+  const column = columnModel[stages] || columnModel[0];
+  const effectiveStages = Math.max(0, column.equilibriumStages * heatEff);
+  const fullStages = Math.floor(effectiveStages);
+  const partialStage = effectiveStages - fullStages;
+
+  for(let i=0; i<fullStages; i++){
+    // Idealisierter Gleichgewichtskontakt: der kondensierte Kopfstrom
+    // bildet auf der nächsten Stufe bei seinem eigenen Blasenpunkt neuen Dampf.
+    const stageTemp = bubblePoint(y,sA,sB);
+    y = vaporAtBubble(y,stageTemp,sA,sB);
   }
+
+  if(partialStage > 1e-9){
+    const stageTemp = bubblePoint(y,sA,sB);
+    const nextY = vaporAtBubble(y,stageTemp,sA,sB);
+    y += (nextY-y) * partialStage;
+  }
+
   return Math.max(0, Math.min(1, y));
 }
 function dewPoint(yA, sA, sB){
@@ -873,7 +893,11 @@ function simMicroStep(dt){
   } else {
     state.tempPot = bp;
     const stages = Number($("columnSelect").value);
+    const column = columnModel[stages] || columnModel[0];
     const yRaw = adjustedHeadComposition(enrichThroughColumn(xA,bp,A,B,stages,heat.eff), xA, stages, heat);
+
+    const baseRate = heat.rate * (1 + Math.max(0, heat.rate-0.55)*0.35); // mL/min
+    let dV = Math.min(baseRate*dt, potTotalVol()-1);
 
     if(!state.hasStartedBoiling || state.lastYA===null){
       state.lastYA = yRaw;
@@ -883,9 +907,10 @@ function simMicroStep(dt){
       state.autoCandidate = startTarget;
       state.autoHold = 0;
     } else {
-      // Fester interner Integrationsschritt: Kopf-Holdup und Fraktionswechsel
-      // dürfen nicht von der gewählten Darstellungsgeschwindigkeit abhängen.
-      const headResponse = Math.max(0.18, 0.38 - stages*0.016);
+      // Vereinfachtes Kopf-Holdup als durchströmte Flüssigkeitsmenge:
+      // die Zusammensetzung reagiert auf den tatsächlich pro Mikroschritt
+      // übergehenden Volumenstrom statt auf einen willkürlichen Zeitfaktor.
+      const headResponse = 1 - Math.exp(-Math.max(dV,0.0001) / Math.max(column.holdupMl,0.05));
       state.lastYA += (yRaw - state.lastYA) * headResponse;
     }
 
@@ -893,8 +918,6 @@ function simMicroStep(dt){
     const headTarget = dewPoint(yHead,A,B);
     state.tempHead += (headTarget - state.tempHead) * 0.20;
 
-    const baseRate = heat.rate * (1 + Math.max(0, heat.rate-0.55)*0.35); // mL/min
-    let dV = Math.min(baseRate*dt, potTotalVol()-1);
     if(dV > 0){
       const mvMix = yHead*moleVolume(A)+(1-yHead)*moleVolume(B);
       const dn = dV/mvMix;
@@ -933,17 +956,12 @@ function simStep(){
 
 function adjustedHeadComposition(yRaw, xA, stages, heat){
   const m=currentMixture();
-  const model=m.model || {simpleBoost:0.10, smear:0.10};
+  const model=m.model || {smear:0.10};
   let y=yRaw;
-  // Auch ohne Kolonne soll bei deutlich verschiedenen Siedepunkten eine erkennbare Anreicherung stattfinden.
-  // Der Boost ist bei einfacher Destillation am stärksten und nimmt mit Kolonnenleistung ab.
-  const stageBoost = Math.max(0, (6 - stages) / 6) * (model.simpleBoost || 0);
-  if(y >= xA){
-    y = y + (1-y)*stageBoost;
-  }else{
-    y = y - y*stageBoost;
-  }
-  // Zu hohe Heizleistung verschmiert die Trennung etwas in Richtung Kolbenzusammensetzung.
+
+  // Die einfache Destillation verwendet jetzt direkt das Raoult-/Antoine-
+  // Gleichgewicht. Eine zusätzliche künstliche Anreicherung entfällt.
+  // Höhere Heizleistung reduziert dagegen die effektive Trennschärfe leicht.
   const heatSmear = (model.smear || 0.10) * Math.max(0, heat.rate-0.28);
   y = y*(1-heatSmear) + xA*heatSmear;
   return Math.max(0,Math.min(1,y));
@@ -952,16 +970,11 @@ function adjustedHeadComposition(yRaw, xA, stages, heat){
 function dynamicCutLimits(){
   const m=currentMixture();
   const base=m.cut || {high:0.86,low:0.14,hold:2};
-  const stages=Number($("columnSelect").value);
-  const heat=heatMap[$("heatSelect").value];
-  // Bei einfacher/kurzer Kolonne und höherer Heizleistung soll nicht fast alles als Übergangsfraktion zählen.
-  // Die Grenzwerte werden dann etwas toleranter, bei guter Kolonne etwas strenger.
-  const stageRelax = Math.max(0, (5 - stages) / 5) * 0.10;
-  const heatRelax = Math.max(0, heat.rate-0.28) * 0.05;
-  const relax = stageRelax + heatRelax;
-  const high = Math.max(0.58, base.high - relax);
-  const low = Math.min(0.42, base.low + relax);
-  return {high,low,hold:base.hold||2};
+
+  // Die automatischen Schnitte beziehen sich auf den Zustand am Kolonnenkopf.
+  // Sie werden nicht mehr nach Kolonnen- oder Heizleistung verschoben:
+  // die Apparatur verändert die Trennung, nicht das Qualitätskriterium.
+  return {high:base.high,low:base.low,hold:base.hold||2};
 }
 
 function targetFractionFromComposition(yA){
